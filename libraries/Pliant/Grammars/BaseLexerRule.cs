@@ -23,6 +23,7 @@ namespace Pliant.Grammars
         public TokenType TokenType
         {
             get { return _tokenType; }
+            set { _tokenType = value; }
         }
     }
 }
