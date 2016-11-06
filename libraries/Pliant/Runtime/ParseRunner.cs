@@ -4,6 +4,7 @@ using Pliant.Runtime;
 
 using Pliant.Automata;
 using System.Collections.Generic;
+using System.Linq;
 using Pliant.Utilities;
 using Pliant.Tokens;
 using Pliant.Grammars;
@@ -34,6 +35,11 @@ public class ParseRunner : IParseRunner
         RegisterDefaultLexemeFactories(_lexemeFactoryRegistry);
         Position = 0;
     }
+
+    /// <summary>
+    /// The currently active lexemes during the parse. This is for external use, hence the union on each access doesn't really matter.
+    /// </summary>
+    public IEnumerable<ILexeme> ActiveLexemes { get { return _existingLexemes.Union(_ignoreLexemes); } }
 
     public bool Read()
     {
