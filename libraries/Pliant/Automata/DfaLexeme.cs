@@ -62,7 +62,8 @@ namespace Pliant.Automata
         private void ReallocateStringBuilderFromCapture()
         {
             _stringBuilder = SharedPools.Default<StringBuilder>().AllocateAndClear();
-            _stringBuilder.Append(_stringBuilder);
+            if(_capture != null)
+                _stringBuilder.Append(_capture);
         }
 
         public bool IsAccepted()
