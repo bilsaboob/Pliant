@@ -28,6 +28,7 @@ namespace Pliant.Ebnf
         public static readonly FullyQualifiedName Optional = new FullyQualifiedName(Namespace, nameof(Optional));
         public static readonly FullyQualifiedName LexerRuleExpression = new FullyQualifiedName(Namespace, nameof(LexerRuleExpression));
         public static readonly FullyQualifiedName LexerRuleTerm = new FullyQualifiedName(Namespace, nameof(LexerRuleTerm));
+        public static readonly FullyQualifiedName LexerRegex = new FullyQualifiedName(Namespace, nameof(LexerRegex));
         public static readonly FullyQualifiedName LexerRuleFactor = new FullyQualifiedName(Namespace, nameof(LexerRuleFactor));
 
         static EbnfGrammar()
@@ -60,6 +61,7 @@ namespace Pliant.Ebnf
                 optional = Optional,
                 lexerRuleExpression = LexerRuleExpression,
                 lexerRuleTerm = LexerRuleTerm,
+                lexerRegex = LexerRegex,
                 lexerRuleFactor = LexerRuleFactor;
 
             var regexGrammar = new RegexGrammar();
@@ -94,7 +96,7 @@ namespace Pliant.Ebnf
             factor.Rule
                 = qualifiedIdentifier
                 | literal
-                | '/' + regexProductionReference + '/'
+                | lexerRegex
                 | repetition
                 | optional
                 | grouping;
@@ -126,7 +128,10 @@ namespace Pliant.Ebnf
 
             lexerRuleFactor.Rule =
                 literal
-                | '/' + regexProductionReference + '/';
+                | lexerRegex;
+
+            lexerRegex.Rule = (Expr)
+                '/' + regexProductionReference + '/';
 
             var grammarExpression = new GrammarExpression(
                 definition, 
@@ -147,6 +152,7 @@ namespace Pliant.Ebnf
                     qualifiedIdentifier, 
                     lexerRuleExpression,
                     lexerRuleTerm,
+                    lexerRegex,
                     lexerRuleFactor
                 }, 
                 new[] { new LexerRuleModel(whitespace), new LexerRuleModel(multiLineComment) });
