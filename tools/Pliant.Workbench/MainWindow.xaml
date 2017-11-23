@@ -9,12 +9,19 @@
 		xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		xmlns:controls="clr-namespace:Pliant.Workbench.Ui.Controls"
+		xmlns:mainMenu="clr-namespace:Pliant.Workbench.Ui.Components.MainMenu"
 		mc:Ignorable="d"
         cssWPF:Css.Class="main light"
         Title="MainWindow" Height="350" Width="525"
         cssWPF:Css.StyleSheet="{DynamicResource InternalStyle}">
-
     <Grid x:Name="appContainer">
-        <controls:GrammarEditor x:Name="grammarEditor"></controls:GrammarEditor>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <mainMenu:MainMenuComponent x:Name="mainMenu" Grid.Column="0"></mainMenu:MainMenuComponent>
+        <GridSplitter x:Name="menuContentSplitter" Width="2" BorderThickness="0" BorderBrush="{StaticResource MenuEditorSeparatorColor}" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource MenuEditorSeparatorColor}"></GridSplitter>
+        <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="2"></controls:GrammarEditor>
     </Grid>
 </Window>

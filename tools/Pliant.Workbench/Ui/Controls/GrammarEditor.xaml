@@ -7,9 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Name="grammarEditorContainer">
-        <avalonEdit:TextEditor Name="grammarTextEditor"
+        <avalonEdit:TextEditor 
+            Name="grammarTextEditor"
             FontFamily="Consolas"
             FontSize="15"
+            ShowLineNumbers="True"
+            LineNumbersForeground="{StaticResource EditorLineNumberColor}"
+            Foreground="{StaticResource EditorFontColor}"
+            Background="{StaticResource EditorBackColor}"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto"
+            Style="{StaticResource EditorStyle}"
             DocumentChanged="GrammarTextEditor_OnDocumentChanged"
         >
         </avalonEdit:TextEditor>

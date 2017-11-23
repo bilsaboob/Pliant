@@ -75,7 +75,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Ui\Components\FolderComponent\FolderComponent.xaml">
+    <Page Include="Ui\Components\FolderModule\FolderComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Components\MainMenu\MainMenuComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Components\MainMenu\MenuContent\SettingsMenuContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ui\Components\MainMenu\MenuContent\ExplorerMenuContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ui\Components\MainMenu\MenuContent\MainMenuContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Components\OpenFileDialog\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Components\OpenFileDialog\OpenFileDialogComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,8 +123,26 @@
     <Compile Include="Common\Range.cs" />
     <Compile Include="Common\StyleHotReloading.cs" />
     <Compile Include="Editor\Services\TextMarkerService.cs" />
-    <Compile Include="Ui\Components\FolderComponent\FolderComponent.xaml.cs">
+    <Compile Include="Ui\Components\FolderModule\FolderComponent.xaml.cs">
       <DependentUpon>FolderComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Components\MainMenu\MainMenuComponent.xaml.cs">
+      <DependentUpon>MainMenuComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Components\MainMenu\MenuContent\SettingsMenuContent.xaml.cs">
+      <DependentUpon>SettingsMenuContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Components\MainMenu\MenuContent\ExplorerMenuContent.xaml.cs">
+      <DependentUpon>ExplorerMenuContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Components\MainMenu\MenuContent\MainMenuContent.xaml.cs">
+      <DependentUpon>MainMenuContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Components\OpenFileDialog\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Components\OpenFileDialog\OpenFileDialogComponent.xaml.cs">
+      <DependentUpon>OpenFileDialogComponent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ui\Controls\FileTreeView\FileNode.cs" />
     <Compile Include="Ui\Controls\FileTreeView\FileSystemNode.cs" />
@@ -119,6 +161,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Ui\Themes\TextEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsing\GrammarParsing.cs" />
