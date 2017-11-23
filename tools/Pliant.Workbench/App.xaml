@@ -4,6 +4,9 @@
              xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <FontFamily x:Key="FiraMono">pack://application:,,,/Ui/Assets/Fonts/#Fira Mono</FontFamily>
+        <FontFamily x:Key="FiraSans">pack://application:,,,/Ui/Assets/Fonts/#Fira Sans</FontFamily>
+        
         <css:StyleSheet x:Key="appStyleSheet"></css:StyleSheet>
         <css:StyleSheet x:Key="InternalStyle" xml:space="preserve"></css:StyleSheet>
     </Application.Resources>

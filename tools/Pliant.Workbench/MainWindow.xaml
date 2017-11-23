@@ -8,13 +8,13 @@
         xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
 		xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
-		xmlns:controls="clr-namespace:Pliant.Workbench.Controls"
+		xmlns:controls="clr-namespace:Pliant.Workbench.Ui.Controls"
 		mc:Ignorable="d"
         cssWPF:Css.Class="main light"
         Title="MainWindow" Height="350" Width="525"
         cssWPF:Css.StyleSheet="{DynamicResource InternalStyle}">
 
     <Grid x:Name="appContainer">
-        <controls:GrammarEditor></controls:GrammarEditor>
+        <controls:GrammarEditor x:Name="grammarEditor"></controls:GrammarEditor>
     </Grid>
 </Window>

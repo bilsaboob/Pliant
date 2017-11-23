@@ -37,7 +37,7 @@ namespace Pliant.Workbench
         
         private void InitializeStyles()
         {
-            var appStyleText = File.ReadAllText("Styles\\app.scss");
+            var appStyleText = File.ReadAllText("Ui\\Styles\\app.scss");
             (Resources["InternalStyle"] as StyleSheet).Content = appStyleText;
         }
 

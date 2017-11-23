@@ -46,6 +46,15 @@
     <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.IconPacks.FontAwesome.1.9.1\lib\net45\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Material, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.IconPacks.Material.1.9.1\lib\net45\MahApps.Metro.IconPacks.Material.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Octicons, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.IconPacks.Octicons.1.9.1\lib\net45\MahApps.Metro.IconPacks.Octicons.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -66,7 +75,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\GrammarEditor.xaml">
+    <Page Include="Ui\Components\FolderComponent\FolderComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Controls\FileTreeView\FileTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Controls\GrammarEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -82,7 +99,16 @@
     <Compile Include="Common\Range.cs" />
     <Compile Include="Common\StyleHotReloading.cs" />
     <Compile Include="Editor\Services\TextMarkerService.cs" />
-    <Compile Include="Controls\GrammarEditor.xaml.cs">
+    <Compile Include="Ui\Components\FolderComponent\FolderComponent.xaml.cs">
+      <DependentUpon>FolderComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Controls\FileTreeView\FileNode.cs" />
+    <Compile Include="Ui\Controls\FileTreeView\FileSystemNode.cs" />
+    <Compile Include="Ui\Controls\FileTreeView\FileTreeView.xaml.cs">
+      <DependentUpon>FileTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Controls\FileTreeView\FolderNode.cs" />
+    <Compile Include="Ui\Controls\GrammarEditor.xaml.cs">
       <DependentUpon>GrammarEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Editor\ColorizerBase.cs" />
@@ -114,21 +140,59 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="Styles\app.scss">
+    <Content Include="Ui\Styles\app.scss">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Assets\fonts\fontawesome-webfont.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Ui\Assets\Fonts\FiraMono-Bold.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraMono-Medium.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraMono-Regular.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Bold.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-BoldItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Book.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-BookItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Eight.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-EightItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-ExtraBold.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-ExtraBoldItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-ExtraLight.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-ExtraLightItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Four.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-FourItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Hair.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-HairItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Heavy.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-HeavyItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Italic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Light.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-LightItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Medium.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-MediumItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Regular.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-SemiBold.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-SemiBoldItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Thin.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-ThinItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Two.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-TwoItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-Ultra.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-UltraItalic.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-UltraLight.ttf" />
+    <Resource Include="Ui\Assets\Fonts\FiraSans-UltraLightItalic.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ICSharpCode.TreeView\ICSharpCode.TreeView.csproj">
+      <Project>{dde2a481-8271-4eac-a330-8fa6a38d13d1}</Project>
+      <Name>ICSharpCode.TreeView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\XamlCSS\XamlCSS.WPF\XamlCSS.WPF.csproj">
       <Project>{73773b1f-0237-4028-881e-586c695f6652}</Project>
       <Name>XamlCSS.WPF</Name>

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.AvalonEdit.Document;
 using Pliant.Workbench.Common;
-using Pliant.Workbench.Controls;
+using GrammarEditor = Pliant.Workbench.Ui.Controls.GrammarEditor;
 
 namespace Pliant.Workbench.Events
 {
