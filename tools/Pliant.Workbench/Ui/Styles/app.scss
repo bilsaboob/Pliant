@@ -1,1 +1,81 @@
-﻿
+﻿.main {
+	Background: #1E1E1E;
+	
+	#appContainer {
+	
+		#mainMenu {
+			Background: #333333;
+
+			#menuIconsContainer {
+				Margin: 10;
+
+				.menuItem {
+					Margin: 0, 0, 0, 20;
+					Foreground: #ADADAD;
+					Width: 25;
+					Height: 25;
+
+					@Property IsMouseOver True {
+						Foreground: White;
+					}
+
+					Icon {
+						Width: 25;
+						Height: 25;
+					}
+				}
+
+				.menuItem.last {
+					Margin: 0;
+				}
+			}
+
+			.menuContent {
+				Background: #252526;
+				Padding: 10,5,10,10;
+
+				.header {
+					Margin: 0,0,0,10;
+					
+					.headerText {
+						Foreground: #ADADAD;
+						FontWeight: Bold;
+					}
+				}
+			}
+
+			.mainMenuContent {
+				.menuItem {
+					Foreground: #ADADAD;
+					@Property IsMouseOver True {
+						Foreground: White;
+					}
+					Icon {
+						Margin: 0, 0, 15, 0;
+					}
+				}
+			}
+		}
+		
+		#mainMenuSplitter {
+			Width: 5;
+			Background: #1E1E1E;
+			Margin: 0;
+			Padding: 0;
+		}
+
+		.grammarEditor {
+			.textEditor {
+				Margin: 0, 0, 0, 0;
+				Foreground: #D4D4D4;
+				Background: #1E1E1E;
+				FontFamily: Consolas;
+				FontSize: 15;
+				ShowLineNumbers: True;
+				LineNumbersForeground: #5A5A5A;
+			}
+		}
+	
+	}
+	
+}

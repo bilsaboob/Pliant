@@ -7,17 +7,23 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 using XamlCSS;
+using XamlCSS.WPF;
 
 namespace Pliant.Workbench.Common
 {
     public class StyleHotReloading : IDisposable
     {
         private FileSystemWatcher _watcher;
+	    private UIElement _uiElement;
         
-        public StyleHotReloading([CallerFilePath] string appRootPath = null)
+        public StyleHotReloading(UIElement uiElement, [CallerFilePath] string appRootPath = null)
         {
-            AppRootPath = Path.GetDirectoryName(appRootPath);
+	        _uiElement = uiElement;
+
+			AppRootPath = Path.GetDirectoryName(appRootPath);
 
             InitializeHotReloading();
         }
@@ -48,12 +54,12 @@ namespace Pliant.Workbench.Common
             {
                 if (File.Exists(e.FullPath))
                 {
-                    TryLoadAndSetAppStyle(e.FullPath);
+                    TryLoadAndApplyStyle(e.FullPath);
                 }
             }
         }
-
-        private void TryLoadAndSetAppStyle(string path)
+		
+        public void TryLoadAndApplyStyle(string path)
         {
             var maxRetries = 3;
             var retries = 0;
@@ -62,7 +68,29 @@ namespace Pliant.Workbench.Common
                 try
                 {
                     var appStyleText = File.ReadAllText(path);
-                    (Application.Current.FindResource("InternalStyle") as StyleSheet).Content = appStyleText;
+
+					// apply the style to the window
+	                if (_uiElement != null)
+	                {
+		                _uiElement.Dispatcher.Invoke(() => {
+			                var stylesheet = XamlCSS.CssParsing.CssParser.Parse(appStyleText);
+			                Css.SetStyleSheet(_uiElement, stylesheet);
+			                //Css.instance.UpdateElement(_uiElement);
+			                var contentControl = _uiElement as ContentControl;
+			                if (contentControl != null)
+			                {
+				                var content = contentControl.Content;
+				                contentControl.Content = null;
+				                contentControl.Content = content;
+			                }
+		                });
+	                }
+
+					// also update the internal style if such exists
+	                /*var globalStyle = Application.Current.FindResource("InternalStyle") as StyleSheet;
+	                if (globalStyle != null)
+						globalStyle.Content = appStyleText;*/
+					
                     break;
                 }
                 catch (Exception) { }

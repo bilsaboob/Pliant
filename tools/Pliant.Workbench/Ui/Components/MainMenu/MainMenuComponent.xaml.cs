@@ -32,12 +32,12 @@ namespace Pliant.Workbench.Ui.Components.MainMenu
             ActivateFileExplorer();
         }
 
-        private void MainMenuItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ActivateMainMenu();
-        }
+	    private void MainMenuItem_OnClick(object sender, RoutedEventArgs e)
+	    {
+		    ActivateMainMenu();
+		}
 
-        private void ActivateMainMenu()
+		private void ActivateMainMenu()
         {
             var menuContent = _menuContents.FirstOrDefault(c => c is MainMenuContent) as MainMenuContent;
             if (menuContent == null)
@@ -48,12 +48,12 @@ namespace Pliant.Workbench.Ui.Components.MainMenu
             SetMenuContent(menuContent);
         }
 
-        private void FileExplorerMenuItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ActivateFileExplorer();
-        }
+	    private void ExplorerMenuItem_OnClick(object sender, RoutedEventArgs e)
+	    {
+			ActivateFileExplorer();
+		}
 
-        private void ActivateFileExplorer()
+		private void ActivateFileExplorer()
         {
             var menuContent = _menuContents.FirstOrDefault(c => c is ExplorerMenuConent) as ExplorerMenuConent;
             if (menuContent == null)
@@ -64,12 +64,12 @@ namespace Pliant.Workbench.Ui.Components.MainMenu
             SetMenuContent(menuContent);
         }
 
-        private void SettingsMenuItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            ActivateSettings();
-        }
+	    private void SettingsMenuItem_OnClick(object sender, RoutedEventArgs e)
+	    {
+		    ActivateSettings();
+		}
 
-        private void ActivateSettings()
+		private void ActivateSettings()
         {
             var menuContent = _menuContents.FirstOrDefault(c => c is SettingsMenuContent) as SettingsMenuContent;
             if (menuContent == null)
@@ -86,5 +86,6 @@ namespace Pliant.Workbench.Ui.Components.MainMenu
             content.VerticalContentAlignment = VerticalAlignment.Stretch;
             this.menuContentContainer.Content = content;
         }
+		
     }
 }

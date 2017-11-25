@@ -3,20 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Pliant.Workbench.Ui.Components.MainMenu"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:wpf="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
              SnapsToDevicePixels="True"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" 
-             Background="{StaticResource MenuBackColor}"
-             VerticalAlignment="Stretch">
-    <Grid x:Name="mainMenuContainer">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <Grid x:Name="mainMenuContainer" wpf:Css.Class="content">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="menuIconsContainer" Grid.Column="0" VerticalAlignment="Stretch" Margin="5">
+        <Grid x:Name="menuIconsContainer" wpf:Css.Class="menuIconsContainer" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -24,21 +22,14 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Margin="5,5,5,20" MouseLeftButtonDown="MainMenuItem_OnMouseLeftButtonDown">
-                <iconPacks:PackIconFontAwesome Kind="ListUl" Width="30" Height="30" Foreground="{StaticResource MenuIconColor}" />
-            </StackPanel>
+            <IconButton Grid.Row="0" FaIcon="ListUl" wpf:Css.Class="menuItem first" Click="MainMenuItem_OnClick"></IconButton>
 
-            <StackPanel Grid.Row="1" Margin="5,0,5,20" MouseLeftButtonDown="FileExplorerMenuItem_OnMouseLeftButtonDown">
-                <iconPacks:PackIconOcticons Kind="File" Width="30" Height="30" Foreground="{StaticResource MenuIconColor}" />
-            </StackPanel>
+            <IconButton Grid.Row="1" OctIcon="File" wpf:Css.Class="menuItem" Click="ExplorerMenuItem_OnClick"></IconButton>
 
-            <StackPanel Grid.Row="3" Margin="5,0,5,5" MouseLeftButtonDown="SettingsMenuItem_OnMouseLeftButtonDown">
-                <iconPacks:PackIconOcticons Kind="Gear" Width="30" Height="30" Foreground="{StaticResource MenuIconColor}" />
-            </StackPanel>
-
+            <IconButton Grid.Row="3" OctIcon="Gear" wpf:Css.Class="menuItem last" Click="SettingsMenuItem_OnClick"></IconButton>
             
         </Grid>
         
-        <ContentControl x:Name="menuContentContainer" Grid.Column="1" Background="{StaticResource MenuContentBackColor}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></ContentControl>
+        <ContentControl x:Name="menuContentContainer" Grid.Column="1"></ContentControl>
     </Grid>
 </UserControl>

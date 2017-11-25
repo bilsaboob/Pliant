@@ -6,22 +6,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pliant.Workbench"
         xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
-		xmlns:cssWPF="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		xmlns:controls="clr-namespace:Pliant.Workbench.Ui.Controls"
 		xmlns:mainMenu="clr-namespace:Pliant.Workbench.Ui.Components.MainMenu"
+		xmlns:wpf="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
 		mc:Ignorable="d"
-        cssWPF:Css.Class="main light"
-        Title="MainWindow" Height="350" Width="525"
-        cssWPF:Css.StyleSheet="{DynamicResource InternalStyle}">
-    <Grid x:Name="appContainer">
+        wpf:Css.Class="main"
+        Title="Grammar Workbench" Height="350" Width="525"
+        >
+    <Grid x:Name="appContainer" wpf:Css.Class="appContainer">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        
         <mainMenu:MainMenuComponent x:Name="mainMenu" Grid.Column="0"></mainMenu:MainMenuComponent>
-        <GridSplitter x:Name="menuContentSplitter" Width="2" BorderThickness="0" BorderBrush="{StaticResource MenuEditorSeparatorColor}" Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource MenuEditorSeparatorColor}"></GridSplitter>
+
+        <GridSplitter x:Name="mainMenuSplitter" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"></GridSplitter>
+
         <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="2"></controls:GrammarEditor>
     </Grid>
 </Window>

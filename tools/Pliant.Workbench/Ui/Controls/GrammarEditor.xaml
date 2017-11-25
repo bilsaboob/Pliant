@@ -4,20 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:wpf="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Name="grammarEditorContainer">
+             d:DesignHeight="300" d:DesignWidth="300"
+             wpf:Css.Class="grammarEditor">
+    <Grid>
         <avalonEdit:TextEditor 
+            wpf:Css.Class="textEditor"
             Name="grammarTextEditor"
-            FontFamily="Consolas"
-            FontSize="15"
-            ShowLineNumbers="True"
-            LineNumbersForeground="{StaticResource EditorLineNumberColor}"
-            Foreground="{StaticResource EditorFontColor}"
-            Background="{StaticResource EditorBackColor}"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto"
-            Style="{StaticResource EditorStyle}"
             DocumentChanged="GrammarTextEditor_OnDocumentChanged"
         >
         </avalonEdit:TextEditor>

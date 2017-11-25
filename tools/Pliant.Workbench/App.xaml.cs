@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Navigation;
 using Pliant.Workbench.Common;
 using Pliant.Workbench.Editor;
 using Pliant.Workbench.Events;
@@ -22,11 +23,8 @@ namespace Pliant.Workbench
         public App()
         {
             InitializeComponent();
-
-            Css.Initialize();
-
+			
             InitializeStyles();
-            InitializeHotReloading();
 
             GrammarParsing = new GrammarParsing();
 
@@ -34,17 +32,29 @@ namespace Pliant.Workbench
         }
 
         public GrammarParsing GrammarParsing { get; set; }
-        
-        private void InitializeStyles()
-        {
-            var appStyleText = File.ReadAllText("Ui\\Styles\\app.scss");
-            (Resources["InternalStyle"] as StyleSheet).Content = appStyleText;
-        }
 
-        private void InitializeHotReloading()
+	    private void App_OnStartup(object sender, StartupEventArgs e)
+	    {
+		    var window = new MainWindow();
+		    window.Width = 1024;
+		    window.Height = 900;
+
+		    InitializeHotReloading();
+
+		    window.Show();
+		}
+
+		private void InitializeStyles()
         {
-            _hotReloading = new StyleHotReloading();
-            _hotReloading.Start();
+	        XamlCSS.WPF.Css.Initialize();
+		}
+
+	    private void InitializeHotReloading()
+        {
+			_hotReloading = new StyleHotReloading(MainWindow);
+	        _hotReloading.TryLoadAndApplyStyle("Ui\\Styles\\app.scss");
+
+			_hotReloading.Start();
         }
 
         private void InitializeEvents()
