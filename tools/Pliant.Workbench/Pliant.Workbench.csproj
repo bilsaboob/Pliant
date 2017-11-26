@@ -40,8 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AngleSharp, Version=0.9.8.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>..\packages\AngleSharp.0.9.8\lib\net45\AngleSharp.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\AngleSharp.0.9.8\lib\net45\AngleSharp.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AvalonEdit.5.0.4\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
@@ -115,7 +114,7 @@
     </Compile>
     <Compile Include="Common\EventBase.cs" />
     <Compile Include="Common\Range.cs" />
-    <Compile Include="Common\StyleHotReloading.cs" />
+    <Compile Include="Common\StylesheetService.cs" />
     <Compile Include="Editor\Services\TextMarkerService.cs" />
     <Compile Include="Ui\Components\FolderModule\FolderComponent.xaml.cs">
       <DependentUpon>FolderComponent.xaml</DependentUpon>
@@ -233,17 +232,13 @@
       <Project>{dde2a481-8271-4eac-a330-8fa6a38d13d1}</Project>
       <Name>ICSharpCode.TreeView</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\RapidCSS\RapidCSS.csproj">
+      <Project>{3c32bb28-9238-4653-8cc1-4726f1f717ab}</Project>
+      <Name>RapidCSS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\RapidFx\RapidFx.csproj">
       <Project>{ab4d7428-44ed-4a31-977d-c2904d255e48}</Project>
       <Name>RapidFx</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\XamlCSS\XamlCSS.WPF\XamlCSS.WPF.csproj">
-      <Project>{73773b1f-0237-4028-881e-586c695f6652}</Project>
-      <Name>XamlCSS.WPF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\XamlCSS\XamlCSS\XamlCSS.csproj">
-      <Project>{a11ea228-bcdc-46ec-8f8b-57fc9227c1ac}</Project>
-      <Name>XamlCSS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\libraries\Pliant\Pliant.csproj">
       <Project>{f0fe097d-c083-42d9-b6cf-89412d4720ab}</Project>

@@ -8,8 +8,7 @@ using Pliant.Workbench.Common;
 using Pliant.Workbench.Editor;
 using Pliant.Workbench.Events;
 using Pliant.Workbench.Parsing;
-using XamlCSS;
-using XamlCSS.WPF;
+using RapidCSS.WPF;
 
 namespace Pliant.Workbench
 {
@@ -18,8 +17,6 @@ namespace Pliant.Workbench
     /// </summary>
     public partial class App : Application
     {
-        private StyleHotReloading _hotReloading;
-
         public App()
         {
             InitializeComponent();
@@ -46,15 +43,16 @@ namespace Pliant.Workbench
 
 		private void InitializeStyles()
         {
-	        XamlCSS.WPF.Css.Initialize();
+	        Css.Initialize();
 		}
 
 	    private void InitializeHotReloading()
         {
-			_hotReloading = new StyleHotReloading(MainWindow);
-	        _hotReloading.TryLoadAndApplyStyle("Ui\\Styles\\app.scss");
+			StylesheetService.Instance.EnableHotReloadingForPath("*.scss", "Ui\\Styles", true);
 
-			_hotReloading.Start();
+			StylesheetService.Instance.ManageStyle(MainWindow);
+
+			StylesheetService.Instance.HotReloadingEnabled = true;
         }
 
         private void InitializeEvents()
@@ -68,5 +66,10 @@ namespace Pliant.Workbench
                 });
             });
         }
+
+	    public void Exit()
+	    {
+			MainWindow.Close();
+	    }
     }
 }

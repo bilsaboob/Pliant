@@ -27,19 +27,19 @@ namespace Pliant.Workbench.Ui.Components.MainMenu.MenuContent
             InitializeComponent();
         }
 
-        private void OpenFolderMenuItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var rootPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            var dlg = OpenFileDialogComponent.Open(rootPath);
-            if (Directory.Exists(dlg.SelectedPath))
-            {
-                // we have a path to open
-            }
-        }
+	    private void OpenFolderMenuItem_OnClick(object sender, RoutedEventArgs e)
+	    {
+		    var rootPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+		    var dlg = OpenFileDialogComponent.Open(rootPath);
+		    if (Directory.Exists(dlg.SelectedPath))
+		    {
+			    // we have a path to open
+		    }
+		}
 
-        private void ExitMenuItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Application.Current.MainWindow.Close();
-        }
+	    private void ExitMenuItem_OnClick(object sender, RoutedEventArgs e)
+	    {
+			((App)Application.Current).Exit();
+		}
     }
 }

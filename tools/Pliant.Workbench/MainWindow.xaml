@@ -4,18 +4,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Pliant.Workbench"
-        xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
-		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		xmlns:controls="clr-namespace:Pliant.Workbench.Ui.Controls"
 		xmlns:mainMenu="clr-namespace:Pliant.Workbench.Ui.Components.MainMenu"
-		xmlns:wpf="clr-namespace:XamlCSS.WPF;assembly=XamlCSS.WPF"
+		xmlns:treeView="clr-namespace:RapidFx.Ui.Controls.TreeView;assembly=RapidFx"
+		xmlns:wpf="clr-namespace:RapidCSS.WPF;assembly=RapidCSS"
 		mc:Ignorable="d"
         wpf:Css.Class="main"
         Title="Grammar Workbench" Height="350" Width="525"
         >
     <Grid x:Name="appContainer" wpf:Css.Class="appContainer">
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition ></ColumnDefinition>
@@ -25,6 +24,9 @@
 
         <GridSplitter x:Name="mainMenuSplitter" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"></GridSplitter>
 
-        <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="2"></controls:GrammarEditor>
+        <treeView:RTreeView Grid.Column="2" Width="300"></treeView:RTreeView>
+
+        <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="3"></controls:GrammarEditor>
+        
     </Grid>
 </Window>

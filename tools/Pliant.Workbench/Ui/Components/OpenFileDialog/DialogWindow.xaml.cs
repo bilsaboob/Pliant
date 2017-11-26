@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Pliant.Workbench.Common;
 
 namespace Pliant.Workbench.Ui.Components.OpenFileDialog
 {
@@ -28,7 +29,9 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
 
             wnd.dialogContent.Content = content;
 
-            wnd.ShowDialog();
+	        StylesheetService.Instance.ManageStyle(wnd);
+
+			wnd.ShowDialog();
 
             return wnd;
         }
@@ -36,6 +39,6 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
         public DialogWindow()
         {
             InitializeComponent();
-        }
+		}
     }
 }

@@ -1,7 +1,6 @@
 ﻿<Application x:Class="Pliant.Workbench.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:css="clr-namespace:XamlCSS;assembly=XamlCSS"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              Startup="App_OnStartup">
     <Application.Resources>
@@ -33,8 +32,8 @@
                     <FontFamily x:Key="FiraMono">pack://application:,,,/Ui/Assets/Fonts/#Fira Mono</FontFamily>
                     <FontFamily x:Key="FiraSans">pack://application:,,,/Ui/Assets/Fonts/#Fira Sans</FontFamily>
 
-                    <css:StyleSheet x:Key="appStyleSheet"></css:StyleSheet>
-                    <css:StyleSheet x:Key="InternalStyle" xml:space="preserve"></css:StyleSheet>
+                    <StyleSheet x:Key="appStyleSheet"></StyleSheet>
+                    <StyleSheet x:Key="InternalStyle" xml:space="preserve"></StyleSheet>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
