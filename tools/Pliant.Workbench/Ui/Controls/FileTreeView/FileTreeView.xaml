@@ -4,13 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Pliant.Workbench.Ui.Controls.FileTreeView"
-             xmlns:treeview="http://icsharpcode.net/sharpdevelop/treeview"
+             xmlns:rfx="clr-namespace:RapidFx.Ui.Controls.TreeView;assembly=RapidFx"
+
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <!-- File template -->
+        <HierarchicalDataTemplate DataType="{x:Type local:FileTreeItemViewModel}" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem">
+                <TextBlock Text="{Binding DisplayName}" Background="Red" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+
+        <!-- Folder template -->
+        <HierarchicalDataTemplate DataType="{x:Type local:FolderTreeItemViewModel}" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem">
+                <TextBlock Text="{Binding DisplayName}" Background="Green" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+    
 	<Grid Name="fileTreeViewContainer">
-		<treeview:SharpTreeView x:Name="fileTreeView"
-		    AllowDrop="True"
-		    AllowDropOrder="True">
-		</treeview:SharpTreeView>
+        <rfx:TreeView x:Name="treeView" BorderThickness="0">
+        </rfx:TreeView>
 	</Grid>
 </UserControl>
+

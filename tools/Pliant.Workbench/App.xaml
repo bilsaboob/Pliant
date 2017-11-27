@@ -24,7 +24,7 @@
                     <SolidColorBrush x:Key="MenuContentHeaderTextColor" Color="#ADADAD"></SolidColorBrush>
 
                     <SolidColorBrush x:Key="MenuEditorSeparatorColor" Color="#1E1E1E"></SolidColorBrush>
-                    
+
                     <SolidColorBrush x:Key="EditorBackColor" Color="#1E1E1E"></SolidColorBrush>
                     <SolidColorBrush x:Key="EditorFontColor" Color="#D4D4D4"></SolidColorBrush>
                     <SolidColorBrush x:Key="EditorLineNumberColor" Color="#5A5A5A"></SolidColorBrush>
@@ -35,6 +35,7 @@
                     <StyleSheet x:Key="appStyleSheet"></StyleSheet>
                     <StyleSheet x:Key="InternalStyle" xml:space="preserve"></StyleSheet>
                 </ResourceDictionary>
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

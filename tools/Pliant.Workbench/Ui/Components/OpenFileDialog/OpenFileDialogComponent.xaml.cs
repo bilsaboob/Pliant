@@ -25,7 +25,7 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
             var dlg = new OpenFileDialogComponent();
             dlg.RootPath = rootPath;
 
-            var wnd = DialogWindow.Open(dlg);
+            var wnd = DialogWindow.OpenCentered(dlg, "Open folder...");
 
             return dlg;
         }

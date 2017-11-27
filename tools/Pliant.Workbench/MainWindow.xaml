@@ -24,8 +24,6 @@
 
         <GridSplitter x:Name="mainMenuSplitter" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"></GridSplitter>
 
-        <treeView:RTreeView Grid.Column="2" Width="300"></treeView:RTreeView>
-
         <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="3"></controls:GrammarEditor>
         
     </Grid>

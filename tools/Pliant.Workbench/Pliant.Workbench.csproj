@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Ui\Controls\FileTreeView\FileNode.cs" />
     <Compile Include="Ui\Controls\FileTreeView\FileSystemNode.cs" />
+    <Compile Include="Ui\Controls\FileTreeView\FileTreeItemViewModel.cs" />
     <Compile Include="Ui\Controls\FileTreeView\FileTreeView.xaml.cs">
       <DependentUpon>FileTreeView.xaml</DependentUpon>
     </Compile>
@@ -231,6 +232,10 @@
     <ProjectReference Include="..\..\..\ICSharpCode.TreeView\ICSharpCode.TreeView.csproj">
       <Project>{dde2a481-8271-4eac-a330-8fa6a38d13d1}</Project>
       <Name>ICSharpCode.TreeView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\MultiSelectTreeView\MultiSelectTreeView.csproj">
+      <Project>{2854814F-EA3C-41D4-AA94-460C4694F430}</Project>
+      <Name>MultiSelectTreeView</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\RapidCSS\RapidCSS.csproj">
       <Project>{3c32bb28-9238-4653-8cc1-4726f1f717ab}</Project>

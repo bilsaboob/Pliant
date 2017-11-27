@@ -24,14 +24,36 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 		public FileTreeView()
 		{
 			InitializeComponent();
-		}
+        }
+
+	    public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
+	        "ShowRoot", typeof(bool), typeof(FileTreeView), new PropertyMetadata(default(bool), ShowRootChanged));
+
+	    private static void ShowRootChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	    {
+	        if (e.NewValue != e.OldValue)
+	        {
+	            ((FileTreeView) (d)).treeView.ShowRootNode = (bool)e.NewValue;
+	        }
+	    }
+
+	    public bool ShowRoot
+	    {
+	        get { return (bool) GetValue(ShowRootProperty); }
+	        set { SetValue(ShowRootProperty, value); }
+	    }
+
+	    public MultiSelectTreeView TreeView => this.treeView.treeView;
 
 		public bool OpenPath(string rootPath)
 		{
-			if (!Directory.Exists(rootPath))
-				return false;
+		    var rootInfo = new DirectoryInfo(rootPath);
 
-			fileTreeView.Root = new FolderNode(rootPath);
+            if (!rootInfo.Exists)
+				return false;
+            
+            treeView.RootNode = new FolderTreeItemViewModel(null, rootInfo);
+			
 			return true;
 		}
 	}
