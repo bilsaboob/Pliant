@@ -25,6 +25,6 @@
         <GridSplitter x:Name="mainMenuSplitter" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"></GridSplitter>
 
         <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="3"></controls:GrammarEditor>
-        
+
     </Grid>
 </Window>

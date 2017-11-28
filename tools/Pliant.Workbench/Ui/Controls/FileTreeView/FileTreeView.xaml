@@ -5,22 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Pliant.Workbench.Ui.Controls.FileTreeView"
              xmlns:rfx="clr-namespace:RapidFx.Ui.Controls.TreeView;assembly=RapidFx"
+             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
+
+        <controls:ThicknessLeftConverter x:Key="ThicknessLeftConverter"/>
+
+        <Style x:Key="treeItemContainerStyle" TargetType="{x:Type StackPanel}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <Setter Property="Background" Value="#094771"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- File template -->
         <HierarchicalDataTemplate DataType="{x:Type local:FileTreeItemViewModel}" ItemsSource="{Binding Children}">
-            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem">
-                <TextBlock Text="{Binding DisplayName}" Background="Red" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0"/>
+            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem" Style="{StaticResource treeItemContainerStyle}">
+                <Icon IconType="{Binding IconType}" Width="{Binding IconSize}" Height="{Binding IconSize}" FontSize="{Binding IconSize}" Foreground="{Binding IconColor}" Margin="0, 5, 0, 5"></Icon>
+                <TextBlock Text="{Binding DisplayName}" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0" Margin="0, 5, 0, 5">
+                </TextBlock>
             </StackPanel>
         </HierarchicalDataTemplate>
 
         <!-- Folder template -->
         <HierarchicalDataTemplate DataType="{x:Type local:FolderTreeItemViewModel}" ItemsSource="{Binding Children}">
-            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem">
-                <TextBlock Text="{Binding DisplayName}" Background="Green" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0"/>
+            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem" Style="{StaticResource treeItemContainerStyle}">
+                <Icon IconType="{Binding IconType}" Width="{Binding IconSize}" Height="{Binding IconSize}" FontSize="{Binding IconSize}" Foreground="{Binding IconColor}" Margin="0, 5, 0, 5"></Icon>
+                <TextBlock Text="{Binding DisplayName}" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0" Margin="0, 5, 0, 5" />
             </StackPanel>
         </HierarchicalDataTemplate>
     </UserControl.Resources>

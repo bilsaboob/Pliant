@@ -189,6 +189,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Ui\Assets\Fonts\mfixx.ttf" />
+    <Resource Include="Ui\Assets\Fonts\file-icons.ttf" />
+    <Resource Include="Ui\Assets\Fonts\devopicons.ttf" />
     <Resource Include="Ui\Assets\Fonts\FiraMono-Bold.ttf" />
     <Resource Include="Ui\Assets\Fonts\FiraMono-Medium.ttf" />
     <Resource Include="Ui\Assets\Fonts\FiraMono-Regular.ttf" />

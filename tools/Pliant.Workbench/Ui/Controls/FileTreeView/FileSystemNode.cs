@@ -25,6 +25,13 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 {
 	public abstract class FileSystemNode : SharpTreeNode
 	{
+	    public FileSystemNode()
+	    {
+	        IconType = 0;
+	    }
+
+	    public object IconType { get; set; }
+
 		public abstract string FullPath { get; }
 
 		public virtual long? FileSize
