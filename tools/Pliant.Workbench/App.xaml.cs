@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using Pliant.Workbench.Common;
 using Pliant.Workbench.Editor;
@@ -61,8 +62,8 @@ namespace Pliant.Workbench
                 var parseContext = new ParseContext() {Input = e.Document.Text};
                 GrammarParsing.Parse(parseContext, (context) => {
                     // parse was finished
-                    new ParseErrorsColorizer(e.Editor.Colorizing).Colorize(context);
-                    new GrammarColorizer(e.Editor.Colorizing).Colorize(context);
+                    //new ParseErrorsColorizer(e.Editor.Colorizing).Colorize(context);
+                    //new GrammarColorizer(e.Editor.Colorizing).Colorize(context);
                 });
             });
         }

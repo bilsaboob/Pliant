@@ -43,18 +43,16 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 	        set { SetValue(ShowRootProperty, value); }
 	    }
 
-	    public MultiSelectTreeView TreeView => this.treeView.treeView;
-
 		public bool OpenPath(string rootPath)
 		{
 		    var rootInfo = new DirectoryInfo(rootPath);
 
             if (!rootInfo.Exists)
 				return false;
-            
+
             treeView.RootNode = new FolderTreeItemViewModel(null, rootInfo);
-			
-			return true;
+            
+            return true;
 		}
 	}
 }

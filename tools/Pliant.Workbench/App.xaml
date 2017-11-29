@@ -8,7 +8,6 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Ui/Themes/TextEditor.xaml" />
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="MenuIconBorderColor" Color="#ADADAD"></SolidColorBrush>
                     <SolidColorBrush x:Key="MenuIconColor" Color="#ADADAD"></SolidColorBrush>

@@ -17,6 +17,8 @@ namespace Pliant.Workbench.Parsing
 
         public void Parse(ParseContext context, Action<ParseContext> onParsedAction)
         {
+            return;
+
             var engine = new ParseEngine(
                 _grammar,
                 new ParseEngineOptions(loggingEnabled: false)

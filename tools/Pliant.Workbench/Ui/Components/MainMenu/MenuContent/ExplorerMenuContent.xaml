@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:RapidCSS.WPF;assembly=RapidCSS"
+             xmlns:fileTreeView="clr-namespace:Pliant.Workbench.Ui.Controls.FileTreeView"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              wpf:Css.Class="menuContent explorerMenuContent"
@@ -13,8 +14,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid wpf:Css.Class="header">
+        <Grid wpf:Css.Class="header" Grid.Row="0">
             <TextBlock wpf:Css.Class="headerText">FILE EXPLORER</TextBlock>
         </Grid>
+        <fileTreeView:FileTreeView x:Name="fileTreeView" ShowRoot="False" Grid.Row="1" ></fileTreeView:FileTreeView>
     </Grid>
 </UserControl>

@@ -5,44 +5,81 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Pliant.Workbench.Ui.Controls.FileTreeView"
              xmlns:rfx="clr-namespace:RapidFx.Ui.Controls.TreeView;assembly=RapidFx"
-             xmlns:controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
-
+             xmlns:vm="clr-namespace:Demo.ViewModel;assembly=RapidFx"
+             xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
+             xmlns:templates="clr-namespace:RapidFx.Ui.Templates;assembly=RapidFx"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
-    <UserControl.Resources>
-
-        <controls:ThicknessLeftConverter x:Key="ThicknessLeftConverter"/>
-
-        <Style x:Key="treeItemContainerStyle" TargetType="{x:Type StackPanel}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                    <Setter Property="Background" Value="#094771"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- File template -->
-        <HierarchicalDataTemplate DataType="{x:Type local:FileTreeItemViewModel}" ItemsSource="{Binding Children}">
-            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem" Style="{StaticResource treeItemContainerStyle}">
-                <Icon IconType="{Binding IconType}" Width="{Binding IconSize}" Height="{Binding IconSize}" FontSize="{Binding IconSize}" Foreground="{Binding IconColor}" Margin="0, 5, 0, 5"></Icon>
-                <TextBlock Text="{Binding DisplayName}" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0" Margin="0, 5, 0, 5">
-                </TextBlock>
-            </StackPanel>
-        </HierarchicalDataTemplate>
-
-        <!-- Folder template -->
-        <HierarchicalDataTemplate DataType="{x:Type local:FolderTreeItemViewModel}" ItemsSource="{Binding Children}">
-            <StackPanel Orientation="Horizontal" Css.Class="treeViewItem" Style="{StaticResource treeItemContainerStyle}">
-                <Icon IconType="{Binding IconType}" Width="{Binding IconSize}" Height="{Binding IconSize}" FontSize="{Binding IconSize}" Foreground="{Binding IconColor}" Margin="0, 5, 0, 5"></Icon>
-                <TextBlock Text="{Binding DisplayName}" Foreground="#D4D4D4" VerticalAlignment="Center" Padding="4,0,2,0" Margin="0, 5, 0, 5" />
-            </StackPanel>
-        </HierarchicalDataTemplate>
-    </UserControl.Resources>
-    
 	<Grid Name="fileTreeViewContainer">
-        <rfx:TreeView x:Name="treeView" BorderThickness="0">
+        <rfx:TreeView x:Name="treeView" ItemsSource="{Binding Children}" 
+                      BorderThickness="0"
+                      Padding="0" Margin="0"
+                      Background="#252526" 
+                      Foreground="#CCCCCC"
+                      
+                      ItemHoverBackgroundBrush="#2A2D2E"
+                      ItemHoverBorderBrush="Transparent"
+                      
+                      ItemSelectedBackgroundBrush="#094771"
+                      ItemSelectedBorderBrush="Transparent"
+                      
+                      ItemSelectedHoverBackgroundBrush="#094771"
+                      ItemSelectedHoverBorderBrush="Transparent"
+                      
+                      ItemSelectedFocusedBackgroundBrush="#094771"
+                      ItemSelectedFocusedBorderBrush="Transparent"
+                      
+                      ItemTreeViewInactiveBackgroundBrush="#3F3F46"
+                      ItemTreeViewInactiveBorderBrush="Transparent"
+                      
+                      ItemFocusedBorderBrush="Transparent"
+                      
+                      ToggleExpandedBackgroundBrush="{Binding Path=ToggleCollapsedBackgroundBrush, RelativeSource={RelativeSource Self}}"
+                      ToggleExpandedBorderBrush="{Binding Path=ToggleCollapsedBorderBrush, RelativeSource={RelativeSource Self}}"
+                      
+                      ToggleExpandedHoverBackgroundBrush="{Binding Path=ToggleCollapsedHoverBackgroundBrush, RelativeSource={RelativeSource Self}}"
+                      ToggleExpandedHoverBorderBrush="{Binding Path=ToggleCollapsedHoverBorderBrush, RelativeSource={RelativeSource Self}}"
+                      
+                      >
+            
+            <rfx:TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type Controls:MultiSelectTreeViewItem}">
+                    <!--
+						Here the TreeViewItem's properties are connected with the ViewModel class.
+						Basically you would make all MultiSelectTreeViewItem properties accessible
+						in the view model class that you possibly want to get or set in order to
+						determine or manipulate the view from the view model class.
+						-->
+                    <Setter Property="DisplayName" Value="{Binding DisplayName, Mode=TwoWay}"/>
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="IsEnabled" Value="{Binding IsEnabled, Mode=TwoWay}"/>
+                    <Setter Property="IsVisible" Value="{Binding IsVisible, Mode=TwoWay}"/>
+                    <Setter Property="IsEditable" Value="{Binding IsEditable, Mode=TwoWay}"/>
+                    <Setter Property="IsEditing" Value="{Binding IsEditing, Mode=TwoWay}"/>
+                    <Setter Property="Remarks" Value="{Binding Remarks, Mode=TwoWay}"/>
+                    
+                </Style>
+            </rfx:TreeView.ItemContainerStyle>
+
+            <rfx:TreeView.Resources>
+                <!--
+		        Here the general item appearance is defined, for the ViewModel.TreeItemViewModel type
+		        -->
+                <HierarchicalDataTemplate DataType="{x:Type vm:TreeItemViewModel}" ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Padding="0" Margin="2"/>
+                </HierarchicalDataTemplate>
+                
+            </rfx:TreeView.Resources>
+            
         </rfx:TreeView>
 	</Grid>
 </UserControl>
+
+
+
+
+
+
 

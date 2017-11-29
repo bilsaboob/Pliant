@@ -12,8 +12,8 @@
         <avalonEdit:TextEditor 
             wpf:Css.Class="textEditor"
             Name="grammarTextEditor"
-            HorizontalScrollBarVisibility="Auto"
-            VerticalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Hidden"
+            WordWrap="False"
             DocumentChanged="GrammarTextEditor_OnDocumentChanged"
         >
         </avalonEdit:TextEditor>

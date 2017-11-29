@@ -23,6 +23,8 @@ namespace Pliant.Workbench.Ui.Components.MainMenu.MenuContent
         public ExplorerMenuConent()
         {
             InitializeComponent();
+            
+            fileTreeView.OpenPath("c:\\");
         }
     }
 }
