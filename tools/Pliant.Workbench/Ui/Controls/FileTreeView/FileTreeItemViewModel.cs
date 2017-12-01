@@ -37,9 +37,39 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 
         public virtual string Name => info.Name;
         public virtual string FullPath => info.FullName;
-        public virtual object IconType { get; set; }
-        public virtual int IconSize { get; set; }
-        public virtual SolidColorBrush IconColor { get; set; }
+
+        private object _iconType;
+        public virtual object IconType
+        {
+            get => _iconType;
+            set
+            {
+                _iconType = value;
+                OnPropertyChanged(nameof(IconType));
+            }
+        }
+
+        private int _iconSize;
+        public virtual int IconSize
+        {
+            get => _iconSize;
+            set
+            {
+                _iconSize = value;
+                OnPropertyChanged(nameof(IconSize));
+            }
+        }
+
+        private SolidColorBrush _iconColor;
+        public virtual SolidColorBrush IconColor
+        {
+            get => _iconColor;
+            set
+            {
+                _iconColor = value;
+                OnPropertyChanged(nameof(IconColor));
+            }
+        }
 
         public override string ToString()
         {
@@ -67,24 +97,44 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
             switch (ext)
             {
                 case "cs":
-                    IconType = MfixxIconKind.CSharp;
+                    IconType = PackIconMaterialKind.LanguageCsharp;
                     break;
                 case "txt":
-                    IconType = PackIconOcticonsKind.FileText;
+                    IconType = PackIconMaterialKind.FileDocument;
                     break;
                 case "js":
-                    IconType = MfixxIconKind.JavaScript;
+                    IconType = PackIconMaterialKind.LanguageJavascript;
                     break;
                 case "pdf":
-                    IconType = PackIconFontAwesomeKind.FilePdfOutline;
+                    IconType = PackIconMaterialKind.FilePdf;
                     break;
                 case "html":
-                    IconType = MfixxIconKind.HTML;
+                    IconType = PackIconMaterialKind.LanguageHtml5;
                     break;
                 case "xml":
-                    IconType = FileIconKind.YAML;
+                    IconType = PackIconMaterialKind.FileXml;
                     break;
-                default: break;
+                case "xaml":
+                    IconType = PackIconMaterialKind.Xaml;
+                    break;
+                case "sln":
+                    IconType = PackIconMaterialKind.Visualstudio;
+                    break;
+                case "gitignore":
+                    IconType = PackIconMaterialKind.Git;
+                    break;
+                case "config":
+                    IconType = PackIconOcticonsKind.Gear;
+                    break;
+                case "dll":
+                    IconType = PackIconOcticonsKind.Gear;
+                    break;
+                case "pdb":
+                    IconType = PackIconMaterialKind.Database;
+                    break;
+                default:
+                    IconType = PackIconMaterialKind.FileOutline;
+                    break;
             }
         }
 
@@ -103,7 +153,25 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
         {
             this.info = info;
             this.IconSize = 15;
-            IconType = PackIconOcticonsKind.FileDirectory;
+            IconType = PackIconFontAwesomeKind.Folder;
+        }
+
+        public override bool IsExpanded
+        {
+            get { return base.IsExpanded; }
+            set
+            {
+                base.IsExpanded = value;
+
+                if (IsExpanded)
+                {
+                    IconType = PackIconFontAwesomeKind.FolderOpen;
+                }
+                else
+                {
+                    IconType = PackIconFontAwesomeKind.Folder;
+                }
+            }
         }
 
         protected override void LoadChildren()

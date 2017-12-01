@@ -34,10 +34,10 @@
 
                     <rapidCss:StyleSheet x:Key="appStyleSheet"></rapidCss:StyleSheet>
                     <rapidCss:StyleSheet x:Key="InternalStyle" xml:space="preserve"></rapidCss:StyleSheet>
+                    
                 </ResourceDictionary>
-
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
     </Application.Resources>
 </Application>

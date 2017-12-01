@@ -11,6 +11,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
+    
+    
 	<Grid Name="fileTreeViewContainer">
         <rfx:TreeView x:Name="treeView" ItemsSource="{Binding Children}" 
                       BorderThickness="0"
@@ -67,10 +69,17 @@
                 <!--
 		        Here the general item appearance is defined, for the ViewModel.TreeItemViewModel type
 		        -->
-                <HierarchicalDataTemplate DataType="{x:Type vm:TreeItemViewModel}" ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Padding="0" Margin="2"/>
+                <HierarchicalDataTemplate DataType="{x:Type local:FileSystemTreeItemViewModel}" ItemsSource="{Binding Children}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Icon x:Name="icon" Grid.Column="0" IconType="{Binding IconType}" IconColor="{Binding IconColor}" IconSize="{Binding IconSize}"></Icon>
+                        <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" Padding="0" Margin="2"/>
+                    </Grid>
                 </HierarchicalDataTemplate>
-                
+
             </rfx:TreeView.Resources>
             
         </rfx:TreeView>
