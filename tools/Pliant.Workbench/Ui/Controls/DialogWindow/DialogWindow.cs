@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using AngleSharp.Css;
 using Pliant.Workbench.Utils;
+using RapidFx.Utils;
 
 namespace Pliant.Workbench.Ui.Controls.DialogWindow
 {

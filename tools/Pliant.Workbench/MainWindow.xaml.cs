@@ -11,5 +11,12 @@ namespace Pliant.Workbench
         {
             InitializeComponent();
         }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            mainMenu.MainMenu.ShowOpenFolder();
+        }
     }
 }

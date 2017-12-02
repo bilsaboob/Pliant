@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Pliant.Workbench.Ui.Controls.DialogWindow;
 using Pliant.Workbench.Utils;
+using RapidFx.Utils;
 
 namespace Pliant.Workbench.Ui.Controls.Popover
 {

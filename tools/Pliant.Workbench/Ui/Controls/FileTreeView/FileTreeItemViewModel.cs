@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using Demo.ViewModel;
 using MahApps.Metro.IconPacks;
+using Pliant.Workbench.Utils;
 using RapidFx.Ui.Controls.Icon;
 
 namespace Pliant.Workbench.Ui.Controls.FileTreeView
@@ -34,6 +35,8 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
             Margin = new Thickness(0);
             BorderThickness = new Thickness(0);
         }
+
+        public virtual FileSystemInfo Info => info;
 
         public virtual string Name => info.Name;
         public virtual string FullPath => info.FullName;
@@ -176,19 +179,73 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 
         protected override void LoadChildren()
         {
+            LoadChildren(info);
+        }
+
+        protected void LoadChildren(DirectoryInfo dirInfo)
+        {
             //Load the sub folder
-            var subInfos = info.GetFileSystemInfos().ToList();
+            var subInfos = dirInfo.GetFileSystemInfos().ToList();
+
             foreach (var subInfo in subInfos)
             {
-                if (subInfo is FileInfo)
+                var info = subInfo;
+                if (subInfo.IsSymbolic())
                 {
-                    Children.Add(new FileTreeItemViewModel(this, (FileInfo) subInfo));
+                    var targetPath = subInfo.GetSymbolicPath();
+                    if (targetPath != null)
+                    {
+                        targetPath = targetPath.Replace(@"\\?\", "");
+                        if (info is FileInfo)
+                        {
+                            Children.Add(new SymbolicFileTreeItemViewModel(this, (FileInfo)info, new FileInfo(targetPath)));
+                            continue;
+                        }
+                        else if (info is DirectoryInfo)
+                        {
+                            Children.Add(new SymbolicFolderTreeItemViewModel(this, (DirectoryInfo)info, new DirectoryInfo(targetPath)));
+                            continue;
+                        }
+                    }
                 }
-                else if (subInfo is DirectoryInfo)
+
+                // standard file
+                if (info is FileInfo)
                 {
-                    Children.Add(new FolderTreeItemViewModel(this, (DirectoryInfo) subInfo));
+                    Children.Add(new FileTreeItemViewModel(this, (FileInfo)info));
+                }
+                else if (info is DirectoryInfo)
+                {
+                    Children.Add(new FolderTreeItemViewModel(this, (DirectoryInfo)info));
                 }
             }
+        }
+    }
+
+    public class SymbolicFileTreeItemViewModel : FileTreeItemViewModel
+    {
+        private FileInfo targetInfo;
+
+        public SymbolicFileTreeItemViewModel(TreeItemViewModel parent, FileInfo info, FileInfo targetInfo)
+            : base(parent, info)
+        {
+            this.targetInfo = targetInfo;
+        }
+    }
+
+    public class SymbolicFolderTreeItemViewModel : FolderTreeItemViewModel
+    {
+        private DirectoryInfo targetInfo;
+
+        public SymbolicFolderTreeItemViewModel(TreeItemViewModel parent, DirectoryInfo info, DirectoryInfo targetInfo)
+            : base(parent, info)
+        {
+            this.targetInfo = targetInfo;
+        }
+
+        protected override void LoadChildren()
+        {
+            LoadChildren(this.targetInfo);
         }
     }
 }

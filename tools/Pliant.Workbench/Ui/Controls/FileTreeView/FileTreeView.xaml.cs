@@ -26,16 +26,31 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 			InitializeComponent();
         }
 
-	    public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
-	        "ShowRoot", typeof(bool), typeof(FileTreeView), new PropertyMetadata(default(bool), ShowRootChanged));
-
-	    private static void ShowRootChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 	    {
-	        if (e.NewValue != e.OldValue)
+	        base.OnPropertyChanged(e);
+
+	        if (e.Property == ShowRootProperty)
 	        {
-	            ((FileTreeView) (d)).treeView.ShowRootNode = (bool)e.NewValue;
+	            if (e.NewValue != e.OldValue)
+	            {
+	                this.treeView.ShowRootNode = (bool)e.NewValue;
+	            }
+                return;
+            }
+
+	        if (e.Property == RootNodeProperty)
+	        {
+                if (e.NewValue != e.OldValue)
+	            {
+	                this.treeView.RootNode = e.NewValue as FolderTreeItemViewModel;
+	            }
+	            return;
 	        }
-	    }
+        }
+
+	    public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
+	        "ShowRoot", typeof(bool), typeof(FileTreeView), new PropertyMetadata(default(bool)));
 
 	    public bool ShowRoot
 	    {
@@ -43,14 +58,23 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
 	        set { SetValue(ShowRootProperty, value); }
 	    }
 
-		public bool OpenPath(string rootPath)
+	    public static readonly DependencyProperty RootNodeProperty = DependencyProperty.Register(
+	        "RootNode", typeof(FolderTreeItemViewModel), typeof(FileTreeView), new PropertyMetadata(default(FolderTreeItemViewModel)));
+
+	    public FolderTreeItemViewModel RootNode
+	    {
+	        get { return (FolderTreeItemViewModel) GetValue(RootNodeProperty); }
+	        set { SetValue(RootNodeProperty, value); }
+	    }
+
+		public bool RootPath(string rootPath)
 		{
 		    var rootInfo = new DirectoryInfo(rootPath);
 
             if (!rootInfo.Exists)
 				return false;
 
-            treeView.RootNode = new FolderTreeItemViewModel(null, rootInfo);
+            RootNode = new FolderTreeItemViewModel(null, rootInfo);
             
             return true;
 		}

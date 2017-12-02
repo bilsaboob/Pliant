@@ -96,12 +96,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Ui\Controls\PathTextBox\PathTextBox.xaml.cs">
+      <DependentUpon>PathTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ui\Controls\Popover\PopoverLayer.xaml.cs">
       <DependentUpon>PopoverLayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ui\Controls\Popover\PopoverWindow.cs" />
-    <Compile Include="Utils\ControlExtensions.cs" />
     <Compile Include="Utils\DependencyProperty.cs" />
+    <Compile Include="Utils\Path.cs" />
     <Page Include="Ui\Components\FolderModule\FolderComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -184,6 +187,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Ui\Controls\PathTextBox\PathTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Ui\Controls\Popover\PopoverLayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

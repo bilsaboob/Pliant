@@ -10,7 +10,7 @@
         <Grid.Background>
             <SolidColorBrush Color="Black" Opacity=".5"/>
         </Grid.Background>
-
+        
         <ContentControl x:Name="overlayContent"></ContentControl>
         
         <Grid.Resources>

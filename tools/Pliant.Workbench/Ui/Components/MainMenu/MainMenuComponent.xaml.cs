@@ -33,7 +33,9 @@ namespace Pliant.Workbench.Ui.Components.MainMenu
 			ActivateMainMenu();
         }
 
-	    private void MainMenuItem_OnClick(object sender, RoutedEventArgs e)
+        public MainMenuContent MainMenu => _menuContents.FirstOrDefault(c => c is MainMenuContent) as MainMenuContent;
+
+        private void MainMenuItem_OnClick(object sender, RoutedEventArgs e)
 	    {
 		    ActivateMainMenu();
 		}

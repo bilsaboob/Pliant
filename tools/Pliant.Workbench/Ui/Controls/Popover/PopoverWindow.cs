@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Pliant.Workbench.Ui.Controls.DialogWindow;
 using Pliant.Workbench.Utils;
+using RapidFx.Utils;
 using Window = Pliant.Workbench.Ui.Controls.DialogWindow.Window;
 
 namespace Pliant.Workbench.Ui.Controls.Popover

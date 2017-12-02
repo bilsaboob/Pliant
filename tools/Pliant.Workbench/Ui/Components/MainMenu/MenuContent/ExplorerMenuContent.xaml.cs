@@ -24,7 +24,7 @@ namespace Pliant.Workbench.Ui.Components.MainMenu.MenuContent
         {
             InitializeComponent();
             
-            fileTreeView.OpenPath("c:\\");
+            fileTreeView.RootPath("c:\\");
         }
     }
 }

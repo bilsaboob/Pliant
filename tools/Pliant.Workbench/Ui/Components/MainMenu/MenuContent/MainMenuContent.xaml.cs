@@ -27,17 +27,22 @@ namespace Pliant.Workbench.Ui.Components.MainMenu.MenuContent
             InitializeComponent();
         }
 
-	    private void OpenFolderMenuItem_OnClick(object sender, RoutedEventArgs e)
-	    {
-		    var rootPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-		    var dlg = OpenFileDialogComponent.Open(rootPath, "Open folder...");
-            
+        public void ShowOpenFolder()
+        {
+            var rootPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            var dlg = OpenFileDialogComponent.Open(rootPath, "Open folder...");
+
 
             if (Directory.Exists(dlg.SelectedPath))
-		    {
-			    // we have a path to open
-		    }
-		}
+            {
+                // we have a path to open
+            }
+        }
+
+	    private void OpenFolderMenuItem_OnClick(object sender, RoutedEventArgs e)
+	    {
+	        ShowOpenFolder();
+	    }
 
 	    private void ExitMenuItem_OnClick(object sender, RoutedEventArgs e)
 	    {
