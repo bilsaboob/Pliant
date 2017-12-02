@@ -21,7 +21,7 @@ namespace Pliant.Workbench.Ui.Controls.DialogWindow
         void AtLocation(double x, double y);
         void AtLocation(WindowStartupLocation location);
 
-        void Show();
+        void Show(Action onShown = null);
         void Close();
     }
 
@@ -165,12 +165,12 @@ namespace Pliant.Workbench.Ui.Controls.DialogWindow
             }
         }
 
-        public void Show()
+        public void Show(Action onShown = null)
         {
             if (Frame != null)
             {
                 InitContent();
-                Frame.Show();
+                Frame.Show(onShown);
             }
         }
 
@@ -215,9 +215,9 @@ namespace Pliant.Workbench.Ui.Controls.DialogWindow
             return (TWindow)(object)this;
         }
 
-        public new TWindow Show()
+        public new TWindow Show(Action onShown = null)
         {
-            base.Show();
+            base.Show(onShown);
             return (TWindow)(object)this;
         }
     }
@@ -281,7 +281,7 @@ namespace Pliant.Workbench.Ui.Controls.DialogWindow
             WindowStartupLocation = location;
         }
 
-        public new void Show()
+        public new void Show(Action onShown)
         {
             base.ShowDialog();
         }

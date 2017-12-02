@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,10 +14,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Demo.ViewModel;
 using Pliant.Workbench.Ui.Controls.DialogWindow;
 using Pliant.Workbench.Ui.Controls.FileTreeView;
 using Pliant.Workbench.Ui.Controls.Popover;
 using Pliant.Workbench.Utils;
+using RapidFx.Utils;
 
 namespace Pliant.Workbench.Ui.Components.OpenFileDialog
 {
@@ -29,7 +32,6 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
         {
             var dlg = new OpenFileDialogComponent();
             dlg.RootPath = rootPath;
-            dlg.TypedPath = rootPath;
             dlg.Height = 300;
 
             var popverWindow = PopoverWindow.Create(dlg, wnd => wnd.Title = title)
@@ -46,6 +48,9 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
                 popverWindow.Close();
             };
 
+            dlg.Focusable = true;
+            FocusHelper.FocusCore(dlg);
+
             return dlg;
         }
 
@@ -54,6 +59,105 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
         public OpenFileDialogComponent()
         {
             InitializeComponent();
+
+            InitializeKeyBindings();
+        }
+
+        private void InitializeKeyBindings()
+        {
+            this.AddKeyBinding("Esc", ()=> Canceled?.Invoke(this, EventArgs.Empty));
+            //this.AddKeyBinding("Up", OnKey_Up);
+            //this.AddKeyBinding("Down", OnKey_Down);
+            //this.AddKeyBinding("Shift+Tab", OnKey_ShiftTab);
+            //this.AddKeyBinding("Tab", OnKey_Tab);
+        }
+
+        private void OnKey_Up()
+        {
+            NavigateTreeView(node => {
+                fileTreeView.treeView.Selection.SelectPreviousFromItem(node);
+            });
+        }
+        
+        private void OnKey_Down()
+        {
+            NavigateTreeView(node => {
+                fileTreeView.treeView.Selection.SelectNextFromItem(node);
+            });
+        }
+
+        private void OnKey_Tab()
+        {
+            NavigateTreeView(node => {
+                if (node.CanExpand)
+                {
+                    if (!node.IsExpanded)
+                    {
+                        var selectNode = node;
+                        node.IsExpanded = true;
+                        var model = node.DataContext as TreeItemViewModel;
+                        if (model != null)
+                        {
+                            var child = model.Children.FirstOrDefault();
+                            if (child != null && child.TreeViewItem != null)
+                            {
+                                selectNode = child.TreeViewItem;
+                            }
+                        }
+                        
+                        fileTreeView.treeView.Selection.Select(selectNode);
+                    }
+                }
+            });
+        }
+
+        private void OnKey_ShiftTab()
+        {
+            NavigateTreeView(node => {
+                var parentNode = node.Parent as MultiSelectTreeViewItem;
+                if (parentNode != null)
+                {
+                    if (parentNode.IsExpanded)
+                    {
+                        parentNode.IsExpanded = false;
+                        fileTreeView.treeView.Selection.Select(parentNode);
+                    }
+                }
+            });
+        }
+
+        private void NavigateTreeView(Action<MultiSelectTreeViewItem> navigateAction)
+        {
+            var refocus = pathTextBox.IsFocused || pathTextBox.textBox.IsFocused;
+
+            if (!this.fileTreeView.IsFocused)
+            {
+                MultiSelectTreeViewItem selectedNode = null;
+                if (_lastSelectedPathItem != null)
+                {
+                    selectedNode = _lastSelectedPathItem.TreeViewItem;
+                }
+
+                if (selectedNode == null)
+                {
+                    var selectionCount = this.fileTreeView.treeView.SelectedItems.Count;
+                    if (selectionCount > 0)
+                    {
+                        var selectedItem = this.fileTreeView.treeView.SelectedItems[selectionCount - 1] as ITreeItemViewModel;
+                        if (selectedItem != null)
+                        {
+                            selectedNode = selectedItem.TreeViewItem;
+                        }
+                    }
+                }
+
+                navigateAction(selectedNode);
+            }
+
+            if (refocus)
+            {
+                FocusHelper.FocusCore(pathTextBox.textBox);
+            }
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -62,20 +166,43 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
 
             if (e.Property == RootPathProperty)
             {
-                if (Directory.Exists(RootPath))
-                {
-                    fileTreeView.RootPath(RootPath);
+                var newRootPath = (string)e.NewValue;
 
-                    // Update the selected path if typed path is set
-                    if(!string.IsNullOrEmpty(TypedPath))
-                        TryUpdateSelectedPath(TypedPath);
+                if (e.ValueChanged())
+                {
+                    if (Directory.Exists(newRootPath))
+                    {
+                        fileTreeView.RootPath(newRootPath);
+
+                        // new root, so let's expand it immediately
+                        fileTreeView.RootNode.IsExpanded = true;
+
+                        // Update the selected path if typed path is set
+                        /*if(!string.IsNullOrEmpty(TypedPath))
+                            TryUpdateSelectedPath(TypedPath);*/
+                    }
                 }
                 return;
             }
 
             if (e.Property == TypedPathProperty)
             {
-                TryUpdateSelectedPath(e.NewValue as string);
+                var typedText = e.NewValue as string;
+                if (typedText != null)
+                {
+                    var displayText = typedText;
+                    if (typedText.StartsWithDiskPath(out var diskPath))
+                    {
+                        //Update the root
+                        var newRootPath = diskPath.AsDiskPath();
+                        if (newRootPath != RootPath)
+                            RootPath = newRootPath;
+
+                        displayText = typedText.TrimDiskPath();
+                    }
+
+                    TryUpdateSelectedPath(displayText);
+                }
             }
         }
 
@@ -112,94 +239,102 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
 
         private void TryUpdateSelectedPath(string path)
         {
-            if(string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(RootPath))
                 return;
 
+            // prep the paths
             var rootPath = RootPath;
-            if(string.IsNullOrEmpty(rootPath))
-                return;
-
-            var cleanPath = path.CleanPath();
-            var cleanRootPath = (rootPath + "\\").CleanPath();
-
-            if (!cleanPath.StartsWith(cleanRootPath))
-                return;
-
-            var startPath = cleanPath.Substring(cleanRootPath.Length);
-
-            var paths = startPath.Trim('/', '\\').SplitPath();
-            if(paths.Count == 0)
-                return;
-
-            paths.Reverse();
+            var cleanRootPath = rootPath.CleanPath();
+            var cleanPath = path.CleanPath(); // relative to the root
             
-            var currentTreeElem = fileTreeView.RootNode;
-            if(currentTreeElem == null)
+            // split the paht into parts
+            var pathParts = cleanPath.SplitPath();
+            if(pathParts.Count == 0)
                 return;
+            
+            // collect the nodes for the path
+            var pathNodes = CollectPathNodes(pathParts, out var isPathComplete);
 
-            var isPathComplete = true;
+            // expand the full path
+            ExpandPath(pathNodes);
 
-            var pathTreeElements = new List<FileSystemTreeItemViewModel>();
-            foreach (var pathPart in paths)
+            // Update the selected path only if the path is complete
+            SetSelectedPath(cleanRootPath.CombinePath(path), pathNodes.LastOrDefault());
+        }
+
+        private void SetSelectedPath(string path, FileSystemTreeItemViewModel newSelectedItem)
+        {
+            SelectedPath = path;
+            
+            var selectedItemChanged = _lastSelectedPathItem != newSelectedItem;
+
+            // deselect the previous item
+            if (_lastSelectedPathItem != null && selectedItemChanged)
             {
-                var pathChild = currentTreeElem.Children.OfType<FileSystemTreeItemViewModel>().FirstOrDefault(c => string.Equals(c.Info.Name, pathPart));
+                _lastSelectedPathItem.IsSelected = false;
+
+                // deselect / collapse the previously opened path (that doesn't overlap the new path)
+                DeselectAndCollapsePreviousPath(
+                    _lastSelectedPathItem.Root as FileSystemTreeItemViewModel,
+                    _lastSelectedPathItem.FullPath.CleanPath(),
+                    path.CleanPath()
+                );
+            }
+            
+            _lastSelectedPathItem = newSelectedItem;
+
+            // select the new item
+            if (_lastSelectedPathItem != null)
+            {
+                _lastSelectedPathItem.IsSelected = true;
+                fileTreeView.BringIntoView(_lastSelectedPathItem);
+            }
+        }
+
+        private void ExpandPath(IEnumerable<FileSystemTreeItemViewModel> pathNodes)
+        {
+            foreach (var pathTreeElem in pathNodes)
+            {
+                pathTreeElem.IsExpanded = true;
+            }
+        }
+
+        private List<FileSystemTreeItemViewModel> CollectPathNodes(List<string> pathParts, out bool isPathComplete)
+        {
+            isPathComplete = false;
+            var nodes = new List<FileSystemTreeItemViewModel>();
+
+            var currentNode = fileTreeView.RootNode;
+            if (currentNode == null)
+                return nodes;
+
+            isPathComplete = true;
+
+            foreach (var pathPart in pathParts)
+            {
+                var pathChild = currentNode.Children.OfType<FileSystemTreeItemViewModel>().FirstOrDefault(c => string.Equals(c.Info.Name, pathPart));
                 if (pathChild == null)
                 {
                     isPathComplete = false;
                     break;
                 }
-                
-                currentTreeElem = pathChild as FolderTreeItemViewModel;
-                if(currentTreeElem == null)
+
+                currentNode = pathChild as FolderTreeItemViewModel;
+                if (currentNode == null)
                     break;
 
-                pathTreeElements.Add(pathChild);
+                nodes.Add(pathChild);
             }
 
-            // Expand the complete path
-            foreach (var pathTreeElem in pathTreeElements)
-            {
-                pathTreeElem.IsExpanded = true;
-            }
-
-            // Update the selected path only if the path is complete
-            if (isPathComplete)
-            {
-                SelectedPath = path;
-
-                var newSelectedItem = pathTreeElements.Last();
-                var selectedItemChanged = _lastSelectedPathItem != newSelectedItem;
-
-                // deselect the previous item
-                if (_lastSelectedPathItem != null && selectedItemChanged)
-                {
-                    _lastSelectedPathItem.IsSelected = false;
-
-                    DeselectAndCollapsePreviousPath(
-                        _lastSelectedPathItem.Root as FileSystemTreeItemViewModel, 
-                        _lastSelectedPathItem.FullPath.CleanPath().Replace(cleanRootPath, ""), 
-                        cleanPath.Replace(cleanRootPath, ""));
-                }
-
-                _lastSelectedPathItem = newSelectedItem;
-
-                // select the new item
-                if (_lastSelectedPathItem != null)
-                {
-                    _lastSelectedPathItem.IsSelected = true;
-                }
-            }
+            return nodes;
         }
 
         private void DeselectAndCollapsePreviousPath(FileSystemTreeItemViewModel root, string prevPath, string newPath)
         {
             var newPathParts = newPath.SplitPath();
-            newPathParts.Reverse();
-
             var prevPathParts = prevPath.SplitPath();
-            prevPathParts.Reverse();
 
-            var prevElem = root;
+            var node = root;
 
             var i = 0;
             while (true)
@@ -214,21 +349,35 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
                 if (!string.Equals(newPartName, prevPathParts[i]))
                     break;
 
-                prevElem = prevElem.Children.OfType<FileSystemTreeItemViewModel>().FirstOrDefault(c => string.Equals(newPartName, c.Name));
-                if(prevElem == null)
-                    break;
+                if (i == 0)
+                {
+                    // check directly with the node name
+                    var nodeName = node.Name;
+                    if (node.Name.StartsWithDiskPath(out var diskPath))
+                        nodeName = diskPath;
 
+                    if (!string.Equals(newPartName, nodeName))
+                        break;
+                }
+                else
+                {
+                    // check for a child
+                    node = node.Children.OfType<FileSystemTreeItemViewModel>().FirstOrDefault(c => string.Equals(newPartName, c.Name));
+                    if (node == null)
+                        break;
+                }
+                
                 i++;
             }
 
-            if(prevElem == null)
+            if(node == null)
                 return;
 
             // The following paths should be cleaned
             for (; i < prevPathParts.Count; ++i)
             {
                 var prevPart = prevPathParts[i];
-                var nextElem = prevElem.Children.OfType<FileSystemTreeItemViewModel>().FirstOrDefault(c => string.Equals(prevPart, c.Name));
+                var nextElem = node.Children.OfType<FileSystemTreeItemViewModel>().FirstOrDefault(c => string.Equals(prevPart, c.Name));
 
                 if(nextElem == null)
                     break;
@@ -236,7 +385,7 @@ namespace Pliant.Workbench.Ui.Components.OpenFileDialog
                 nextElem.IsExpanded = false;
                 nextElem.IsSelected = false;
 
-                prevElem = nextElem;
+                node = nextElem;
             }
         }
 

@@ -83,7 +83,7 @@ namespace Pliant.Workbench.Ui.Controls.Popover
             _location = location;
         }
 
-        public void Show()
+        public void Show(Action onShown)
         {
             //Trigger custom logic of finding the popver layer
 
@@ -117,6 +117,8 @@ namespace Pliant.Workbench.Ui.Controls.Popover
                     _popoverLayer.AtLocation(_location);
 
                     _popoverLayer.ShowContent(_content);
+
+                    onShown?.Invoke();
                 }
             }
         }

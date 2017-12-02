@@ -8,14 +8,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              wpf:Css.Class="menuContent explorerMenuContent"
+             Background="{StaticResource MenuContentBackColor}"
              >
     <Grid wpf:Css.Class="inner">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid wpf:Css.Class="header" Grid.Row="0">
-            <TextBlock wpf:Css.Class="headerText">FILE EXPLORER</TextBlock>
+        <Grid 
+            wpf:Css.Class="header" Grid.Row="0"
+            Margin="0,0,0,10"
+            >
+            <TextBlock 
+                wpf:Css.Class="headerText"
+                Foreground="{StaticResource MenuContentHeaderTextColor}"
+                FontWeight="Bold"
+                >
+                FILE EXPLORER
+            </TextBlock>
         </Grid>
         <fileTreeView:FileTreeView x:Name="fileTreeView" ShowRoot="False" Grid.Row="1" ></fileTreeView:FileTreeView>
     </Grid>

@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              wpf:Css.Class="menuContent mainMenuContent"
+             Background="{StaticResource MenuContentBackColor}"
 >
     <Grid wpf:Css.Class="inner">
         <Grid.RowDefinitions>
@@ -15,8 +16,17 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" wpf:Css.Class="header">
-            <TextBlock wpf:Css.Class="headerText">MAIN MENU</TextBlock>
+        <Grid 
+            Grid.Row="0" wpf:Css.Class="header"
+            Margin="0,0,0,10"
+            >
+            <TextBlock 
+                wpf:Css.Class="headerText"
+                Foreground="{StaticResource MenuContentHeaderTextColor}"
+                FontWeight="Bold"
+                >
+                MAIN MENU
+            </TextBlock>
         </Grid>
         <IconButton wpf:Css.Class="menuItem" Grid.Row="1" MaterialIcon="OpenInApp" Text="Open folder..." Click="OpenFolderMenuItem_OnClick"></IconButton>
         <IconButton wpf:Css.Class="menuItem" Grid.Row="3" MaterialIcon="ExitToApp" Text="Exit" Click="ExitMenuItem_OnClick"></IconButton>

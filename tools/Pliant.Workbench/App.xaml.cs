@@ -37,14 +37,14 @@ namespace Pliant.Workbench
 		    window.Width = 1024;
 		    window.Height = 900;
 
-		    InitializeHotReloading();
+		    //InitializeHotReloading();
 
 		    window.Show();
 		}
 
 		private void InitializeStyles()
         {
-	        Css.Initialize();
+	        //Css.Initialize();
 		}
 
 	    private void InitializeHotReloading()

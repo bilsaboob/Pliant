@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Pliant.Workbench.Utils
 {
@@ -27,6 +29,58 @@ namespace Pliant.Workbench.Utils
                 return pathInfo.FullName;
 
             return PathSymbolicUtils.GetFinalPathName(pathInfo.FullName);
+        }
+
+        public static string TrimDiskPath(this string path)
+        {
+            if (Regex.IsMatch(path, @".\:\/"))
+            {
+                var diskPath = path.Substring(path.IndexOf(":/") + 2).Trim('\\', '/', ':');
+                return diskPath;
+            }
+
+            if (Regex.IsMatch(path, @".:\\"))
+            {
+                var diskPath = path.Substring(path.IndexOf(@":\") + 2).Trim('\\', '/', ':');
+                return diskPath;
+            }
+
+            return path;
+        }
+
+        public static bool StartsWithDiskPath(this string path, out string diskPath)
+        {
+            diskPath = null;
+            if (Regex.IsMatch(path, @".\:\/"))
+            {
+                diskPath = path.Substring(0, path.IndexOf(":/") + 2).Trim('/', ':');
+                return true;
+            }
+
+            if (Regex.IsMatch(path, @".:\\"))
+            {
+                diskPath = path.Substring(0, path.IndexOf(@":\") + 2).Trim('\\', ':');
+                return true;
+            }
+
+            return false;
+        }
+
+        public static string AsDiskPath(this string path)
+        {
+            return path + ":\\";
+        }
+
+        public static string CombinePath(this string basePath, params string[] paths)
+        {
+            var path = basePath.CleanPath().Trim('/');
+
+            foreach (var p in paths)
+            {
+                path += "/" + p.CleanPath();
+            }
+
+            return path;
         }
 
         public static string CleanPath(this string path)
@@ -72,12 +126,12 @@ namespace Pliant.Workbench.Utils
                             nextPart = currentPath.Replace(":\\", "");
                         }
                         
-                        paths.Add(nextPart);
+                        paths.Insert(0, nextPart);
                     }
                     break;
                 }
 
-                paths.Add(nextPart);
+                paths.Insert(0, nextPart);
 
                 currentPath = Path.GetDirectoryName(currentPath);
             }

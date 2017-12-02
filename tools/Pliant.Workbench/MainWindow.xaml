@@ -11,6 +11,7 @@
 		xmlns:popover="clr-namespace:Pliant.Workbench.Ui.Controls.Popover"
 		mc:Ignorable="d"
         wpf:Css.Class="main"
+        Background="{StaticResource MainBackColor}"
         Title="Grammar Workbench" Height="350" Width="525"
         >
     <Grid x:Name="appContainer" wpf:Css.Class="appContainer">
@@ -20,12 +21,26 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition ></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
-        <mainMenu:MainMenuComponent x:Name="mainMenu" Grid.Column="0"></mainMenu:MainMenuComponent>
 
-        <GridSplitter x:Name="mainMenuSplitter" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"></GridSplitter>
+        <mainMenu:MainMenuComponent 
+            x:Name="mainMenu" Grid.Column="0"
+            Background="{StaticResource MenuBackColor}"
+            >
+        </mainMenu:MainMenuComponent>
 
-        <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="3"></controls:GrammarEditor>
+        <GridSplitter 
+            x:Name="mainMenuSplitter" Grid.Column="1" 
+            Width="5"
+            Background="{StaticResource MenuEditorSeparatorColor}"
+            Margin="0" Padding="0"
+            HorizontalAlignment="Center" VerticalAlignment="Stretch"
+            >
+        </GridSplitter>
+
+        <controls:GrammarEditor 
+            x:Name="grammarEditor" Grid.Column="3"
+            >
+        </controls:GrammarEditor>
 
         <popover:PopoverLayer Grid.Column="0" Grid.ColumnSpan="4">
         </popover:PopoverLayer>

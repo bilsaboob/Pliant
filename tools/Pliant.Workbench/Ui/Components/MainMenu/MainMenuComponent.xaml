@@ -8,13 +8,38 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              >
+    
+    <UserControl.Resources>
+        <Style x:Key="MainMenuItemStyle" TargetType="{x:Type IconButton}">
+            <Style.Setters>
+                <Setter Property="Margin" Value="0, 0, 0, 20"></Setter>
+                <Setter Property="Width" Value="27"></Setter>
+                <Setter Property="Height" Value="27"></Setter>
+                <Setter Property="IconSize" Value="27"></Setter>
+            </Style.Setters>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource MenuIconColor}"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource MenuIconHoverColor}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="MenuContentStyle"></Style>
+    </UserControl.Resources>
+    
     <Grid x:Name="mainMenuContainer" wpf:Css.Class="content">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="menuIconsContainer" wpf:Css.Class="menuIconsContainer" Grid.Column="0">
+        <Grid 
+            x:Name="menuIconsContainer" wpf:Css.Class="menuIconsContainer" Grid.Column="0"
+            Margin="10"
+            >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -22,14 +47,38 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <IconButton Grid.Row="0" FaIcon="ListUl" IconSize="27" wpf:Css.Class="menuItem first" Click="MainMenuItem_OnClick"></IconButton>
+            <IconButton 
+                Grid.Row="0" wpf:Css.Class="menuItem first"
+                Style="{StaticResource MainMenuItemStyle}"
+                FaIcon="ListUl" 
+                Click="MainMenuItem_OnClick"
+                >
+            </IconButton>
 
-            <IconButton Grid.Row="1" OctIcon="File" IconSize="27" wpf:Css.Class="menuItem" Click="ExplorerMenuItem_OnClick"></IconButton>
+            <IconButton
+                Grid.Row="1" wpf:Css.Class="menuItem"
+                Style="{StaticResource MainMenuItemStyle}"
+                OctIcon="File" 
+                Click="ExplorerMenuItem_OnClick"
+                >
+            </IconButton>
 
-            <IconButton Grid.Row="3" OctIcon="Gear" IconSize="27" wpf:Css.Class="menuItem last" Click="SettingsMenuItem_OnClick"></IconButton>
+            <IconButton 
+                Grid.Row="3" wpf:Css.Class="menuItem last"
+                Style="{StaticResource MainMenuItemStyle}"
+                Margin="0, 0, 0, 0"
+                OctIcon="Gear" 
+                Click="SettingsMenuItem_OnClick"
+                >
+            </IconButton>
             
         </Grid>
-        
-        <ContentControl x:Name="menuContentContainer" Grid.Column="1"></ContentControl>
+
+        <ContentControl 
+            x:Name="menuContentContainer" Grid.Column="1"
+            Background="{StaticResource MenuContentBackColor}"
+            Padding="0,5,0,10"
+            >
+        </ContentControl>
     </Grid>
 </UserControl>

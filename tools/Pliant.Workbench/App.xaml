@@ -9,8 +9,13 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
+                    <SolidColorBrush x:Key="MainBackColor" Color="#1E1E1E"></SolidColorBrush>
+
+                    <SolidColorBrush x:Key="DialogBackColor" Color="#333333"></SolidColorBrush>
+
                     <SolidColorBrush x:Key="MenuIconBorderColor" Color="#ADADAD"></SolidColorBrush>
                     <SolidColorBrush x:Key="MenuIconColor" Color="#ADADAD"></SolidColorBrush>
+                    <SolidColorBrush x:Key="MenuIconHoverColor" Color="White"></SolidColorBrush>
                     <SolidColorBrush x:Key="MenuBackColor" Color="#333333"></SolidColorBrush>
 
                     <SolidColorBrush x:Key="MenuContentBackColor" Color="#252526"></SolidColorBrush>
@@ -28,7 +33,9 @@
                     <SolidColorBrush x:Key="EditorBackColor" Color="#1E1E1E"></SolidColorBrush>
                     <SolidColorBrush x:Key="EditorFontColor" Color="#D4D4D4"></SolidColorBrush>
                     <SolidColorBrush x:Key="EditorLineNumberColor" Color="#5A5A5A"></SolidColorBrush>
-
+                    <FontFamily x:Key="EditorFontFamily">Consolas</FontFamily>
+                    <system:Double x:Key="EditorFontSize">15</system:Double>
+                    
                     <FontFamily x:Key="FiraMono">pack://application:,,,/Ui/Assets/Fonts/#Fira Mono</FontFamily>
                     <FontFamily x:Key="FiraSans">pack://application:,,,/Ui/Assets/Fonts/#Fira Sans</FontFamily>
 

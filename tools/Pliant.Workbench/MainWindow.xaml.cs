@@ -7,6 +7,8 @@ namespace Pliant.Workbench
 {
     public partial class MainWindow : Window
     {
+        public bool HasOpened { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -16,7 +18,11 @@ namespace Pliant.Workbench
         {
             base.OnActivated(e);
 
-            mainMenu.MainMenu.ShowOpenFolder();
+            if (!HasOpened)
+            {
+                HasOpened = true;
+                mainMenu.MainMenu.ShowOpenFolder();
+            }
         }
     }
 }

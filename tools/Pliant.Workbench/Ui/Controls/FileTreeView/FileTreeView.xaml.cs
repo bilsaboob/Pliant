@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Demo.ViewModel;
+using RapidFx.Utils;
 
 namespace Pliant.Workbench.Ui.Controls.FileTreeView
 {
@@ -78,5 +80,24 @@ namespace Pliant.Workbench.Ui.Controls.FileTreeView
             
             return true;
 		}
-	}
+
+        public void BringIntoView(TreeItemViewModel node)
+        {
+            var nodeView = node.TreeViewItem;
+            if (nodeView != null)
+            {
+                var treeView = nodeView.ParentTreeView;
+                if (treeView != null)
+                {
+                    var scrollViewer = treeView.FindChild<ScrollViewer>();
+                    if (scrollViewer != null)
+                    {
+                        scrollViewer.ScrollToBottom();
+                    }
+                }
+
+                nodeView.BringIntoView();
+            }
+        }
+    }
 }

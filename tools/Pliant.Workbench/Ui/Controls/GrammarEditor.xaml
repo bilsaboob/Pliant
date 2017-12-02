@@ -10,8 +10,13 @@
              wpf:Css.Class="grammarEditor">
     <Grid>
         <avalonEdit:TextEditor 
-            wpf:Css.Class="textEditor"
-            Name="grammarTextEditor"
+            x:Name="grammarTextEditor" wpf:Css.Class="textEditor"
+            Foreground="{StaticResource EditorFontColor}"
+            Background="{StaticResource EditorBackColor}"
+            FontFamily="{StaticResource EditorFontFamily}"
+            FontSize="{StaticResource EditorFontSize}"
+            ShowLineNumbers="True"
+            LineNumbersForeground="{StaticResource EditorLineNumberColor}"
             HorizontalScrollBarVisibility="Hidden"
             WordWrap="False"
             SyntaxHighlighting="C#"
