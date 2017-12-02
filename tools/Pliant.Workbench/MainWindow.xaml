@@ -8,6 +8,7 @@
 		xmlns:mainMenu="clr-namespace:Pliant.Workbench.Ui.Components.MainMenu"
 		xmlns:treeView="clr-namespace:RapidFx.Ui.Controls.TreeView;assembly=RapidFx"
 		xmlns:wpf="clr-namespace:RapidCSS.WPF;assembly=RapidCSS"
+		xmlns:popover="clr-namespace:Pliant.Workbench.Ui.Controls.Popover"
 		mc:Ignorable="d"
         wpf:Css.Class="main"
         Title="Grammar Workbench" Height="350" Width="525"
@@ -25,6 +26,9 @@
         <GridSplitter x:Name="mainMenuSplitter" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"></GridSplitter>
 
         <controls:GrammarEditor x:Name="grammarEditor" Grid.Column="3"></controls:GrammarEditor>
+
+        <popover:PopoverLayer Grid.Column="0" Grid.ColumnSpan="4">
+        </popover:PopoverLayer>
 
     </Grid>
 </Window>

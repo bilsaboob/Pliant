@@ -30,8 +30,10 @@ namespace Pliant.Workbench.Ui.Components.MainMenu.MenuContent
 	    private void OpenFolderMenuItem_OnClick(object sender, RoutedEventArgs e)
 	    {
 		    var rootPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-		    var dlg = OpenFileDialogComponent.Open(rootPath);
-		    if (Directory.Exists(dlg.SelectedPath))
+		    var dlg = OpenFileDialogComponent.Open(rootPath, "Open folder...");
+            
+
+            if (Directory.Exists(dlg.SelectedPath))
 		    {
 			    // we have a path to open
 		    }

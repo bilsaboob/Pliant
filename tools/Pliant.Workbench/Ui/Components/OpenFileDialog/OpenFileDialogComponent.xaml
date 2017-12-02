@@ -12,21 +12,33 @@
              wpf:Css.Class="openFileDialog">
     <Grid x:Name="openFileDialogContainer">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <fileTreeView:FileTreeView x:Name="fileTreeView" Grid.Row="0" ShowRoot="True">
-        </fileTreeView:FileTreeView>
-
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="{Binding RelativeSource={RelativeSource AncestorType=local:OpenFileDialogComponent, AncestorLevel=1}, Path=RootPath}"></TextBlock>
+            <TextBox Grid.Row="1"></TextBox>
+        </Grid>
+        
         <Grid Grid.Row="1">
+            <fileTreeView:FileTreeView x:Name="fileTreeView" Grid.Row="0" ShowRoot="True">
+            </fileTreeView:FileTreeView>
+        </Grid>
+
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Margin="5, 10">Open</Button>
-            <Button Grid.Column="2" Margin="5, 10">Cancel</Button>
+            <Button Grid.Column="1" Margin="5, 10" Click="Open_OnClick">Open</Button>
+            <Button Grid.Column="2" Margin="5, 10" Click="Cancel_OnClick">Cancel</Button>
         </Grid>
         
     </Grid>

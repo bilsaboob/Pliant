@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Pliant.Workbench.Ui.Controls.Popover.PopoverLayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:popover="clr-namespace:Pliant.Workbench.Ui.Controls.Popover"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="popoverLayer" Panel.ZIndex="10000" Visibility="Collapsed">
+        <Grid.Background>
+            <SolidColorBrush Color="Black" Opacity=".5"/>
+        </Grid.Background>
+
+        <ContentControl x:Name="overlayContent"></ContentControl>
+        
+        <Grid.Resources>
+
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=Visibility}" Value="Visible">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Background.Opacity"
+                                        From="0.0" To="1.0" Duration="0:0:5"
+                                    />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation
+                                        Storyboard.TargetProperty="Background.Opacity"
+                                        From="1.0" To="0.0" Duration="0:0:5"
+                                    />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+
+
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            
+        </Grid.Resources>
+    </Grid>
+</UserControl>

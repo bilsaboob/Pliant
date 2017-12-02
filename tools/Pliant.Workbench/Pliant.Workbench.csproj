@@ -96,6 +96,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Ui\Controls\Popover\PopoverLayer.xaml.cs">
+      <DependentUpon>PopoverLayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\Controls\Popover\PopoverWindow.cs" />
+    <Compile Include="Utils\ControlExtensions.cs" />
+    <Compile Include="Utils\DependencyProperty.cs" />
     <Page Include="Ui\Components\FolderModule\FolderComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,10 +119,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Ui\Components\MainMenu\MenuContent\MainMenuContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Ui\Components\OpenFileDialog\DialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,12 +165,10 @@
     <Compile Include="Ui\Components\MainMenu\MenuContent\MainMenuContent.xaml.cs">
       <DependentUpon>MainMenuContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ui\Components\OpenFileDialog\DialogWindow.xaml.cs">
-      <DependentUpon>DialogWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Ui\Components\OpenFileDialog\OpenFileDialogComponent.xaml.cs">
       <DependentUpon>OpenFileDialogComponent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ui\Controls\DialogWindow\DialogWindow.cs" />
     <Compile Include="Ui\Controls\FileTreeView\FileTreeItemViewModel.cs" />
     <Compile Include="Ui\Controls\FileTreeView\FileTreeView.xaml.cs">
       <DependentUpon>FileTreeView.xaml</DependentUpon>
@@ -184,6 +184,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Ui\Controls\Popover\PopoverLayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsing\GrammarParsing.cs" />

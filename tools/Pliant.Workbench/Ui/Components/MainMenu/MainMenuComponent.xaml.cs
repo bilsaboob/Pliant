@@ -29,8 +29,8 @@ namespace Pliant.Workbench.Ui.Components.MainMenu
 
             _menuContents = new List<UserControl>();
 
-            ActivateFileExplorer();
-			//ActivateMainMenu();
+            // ActivateFileExplorer();
+			ActivateMainMenu();
         }
 
 	    private void MainMenuItem_OnClick(object sender, RoutedEventArgs e)
