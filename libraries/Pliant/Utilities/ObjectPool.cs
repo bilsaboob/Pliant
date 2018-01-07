@@ -5,6 +5,8 @@ namespace Pliant.Utilities
 {
     internal class ObjectPool<T> where T : class
     {
+        private object _sync = new object();
+
         private readonly Queue<T> _queue;
         private readonly ObjectPoolFactory _factory;
 
@@ -23,9 +25,12 @@ namespace Pliant.Utilities
         
         internal T Allocate()
         {
-            if (_queue.Count == 0)
-                return CreateInstance();
-            return _queue.Dequeue();
+            lock (_sync)
+            {
+                if (_queue.Count == 0)
+                    return CreateInstance();
+                return _queue.Dequeue();
+            }
         }
 
         private T CreateInstance()
@@ -35,9 +40,12 @@ namespace Pliant.Utilities
 
         internal void Free(T value)
         {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-            _queue.Enqueue(value);
+            lock (_sync)
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+                _queue.Enqueue(value);
+            }
         }        
     }
 }
