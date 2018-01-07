@@ -55,8 +55,8 @@ namespace Pliant.Ebnf
 
                 case EbnfNodeType.EbnfBlockSetting:
                     var blockSetting = block as EbnfBlockSetting;
-
-                    switch (blockSetting.Setting.SettingIdentifier.Value)
+                    var settingKey = blockSetting.Setting.SettingIdentifier.Value?.TrimStart(':');
+                    switch (settingKey)
                     {
                         case StartProductionSettingModel.SettingKey:
                             grammarModel.StartSetting = StartSetting(blockSetting);
@@ -137,7 +137,7 @@ namespace Pliant.Ebnf
             var nfa = LexerRuleTerm(expression.Term);
             if (expression.NodeType == EbnfNodeType.EbnfLexerRuleExpressionAlteration)
             {
-                var alteration = (EbnfLexerRuleExpressionAlteration)expression;
+                var alteration = expression as EbnfLexerRuleExpressionAlteration;
                 var alterationNfa = LexerRuleExpression(alteration.Expression);
                 nfa = nfa.Union(alterationNfa);
             }
