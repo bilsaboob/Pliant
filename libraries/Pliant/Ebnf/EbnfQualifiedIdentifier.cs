@@ -1,6 +1,7 @@
 ﻿using Pliant.Diagnostics;
 using Pliant.Utilities;
 using System;
+using Pliant.Tokens;
 
 namespace Pliant.Ebnf
 {
@@ -9,11 +10,21 @@ namespace Pliant.Ebnf
         private readonly int _hashCode;
 
         public string Identifier { get; private set; }
-
+        public IToken IdentifierToken { get; private set; }
+        
         public EbnfQualifiedIdentifier(string identifier)
+            : this(identifier, null)
+        {
+            
+        }
+
+        public EbnfQualifiedIdentifier(string identifier, IToken token)
         {
             Assert.IsNotNull(identifier, nameof(identifier));
+
             Identifier = identifier;
+            IdentifierToken = token;
+
             _hashCode = ComputeHashCode();
         }
 
