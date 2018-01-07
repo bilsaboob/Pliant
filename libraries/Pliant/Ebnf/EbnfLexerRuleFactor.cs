@@ -1,5 +1,6 @@
 ﻿using Pliant.Utilities;
 using System;
+using Pliant.Tokens;
 
 namespace Pliant.Ebnf
 {
@@ -13,11 +14,19 @@ namespace Pliant.Ebnf
 
         public string Value { get; private set; }
 
+        public IToken ValueToken { get; private set; }
+
         private readonly int _hashCode;
 
         public EbnfLexerRuleFactorLiteral(string value)
+            : this(value, null)
+        {
+        }
+
+        public EbnfLexerRuleFactorLiteral(string value, IToken token)
         {
             Value = value;
+            ValueToken = token;
             _hashCode = ComputeHashCode();
         }
 

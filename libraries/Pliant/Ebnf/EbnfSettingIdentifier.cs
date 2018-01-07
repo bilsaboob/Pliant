@@ -1,17 +1,26 @@
 ﻿using Pliant.Utilities;
 using System;
+using Pliant.Tokens;
 
 namespace Pliant.Ebnf
 {
     public class EbnfSettingIdentifier : EbnfNode
     {
         public string Value { get; private set; }
+        public IToken ValueToken { get; private set; }
 
         private readonly int _hashCode;
 
         public EbnfSettingIdentifier(string value)
+            : this(value, null)
+        {
+        }
+
+        public EbnfSettingIdentifier(string value, IToken token)
         {
             Value = value;
+            ValueToken = token;
+
             _hashCode = ComputeHashCode();
         }
 

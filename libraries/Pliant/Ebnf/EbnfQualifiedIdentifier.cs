@@ -72,12 +72,20 @@ namespace Pliant.Ebnf
         public EbnfQualifiedIdentifierConcatenation(
             string identifier,
             EbnfQualifiedIdentifier qualifiedIdentifier)
-            : base(identifier)
+            : this(identifier, null, qualifiedIdentifier)
+        {
+        }
+
+        public EbnfQualifiedIdentifierConcatenation(
+            string identifier,
+            IToken token,
+            EbnfQualifiedIdentifier qualifiedIdentifier)
+            : base(identifier, token)
         {
             QualifiedIdentifier = qualifiedIdentifier;
             _hashCode = ComputeHashCode();
         }
-
+        
         public override EbnfNodeType NodeType
         {
             get

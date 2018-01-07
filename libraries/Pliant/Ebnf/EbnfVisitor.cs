@@ -2,6 +2,7 @@
 using Pliant.Tree;
 using Pliant.RegularExpressions;
 using Pliant.LexerRules;
+using Pliant.Tokens;
 
 namespace Pliant.Ebnf
 {
@@ -98,6 +99,7 @@ namespace Pliant.Ebnf
         {
             EbnfQualifiedIdentifier repetitionIdentifier = null;
             string identifier = null;
+            IToken identifierToken = null;
             for (int c = 0; c < node.Children.Count; c++)
             {
                 var child = node.Children[c];
@@ -114,14 +116,18 @@ namespace Pliant.Ebnf
                         var tokenNode = child as ITokenTreeNode;
                         var token = tokenNode.Token;
                         if (token.TokenType.Equals(EbnfGrammar.TokenTypes.Identifier))
+                        {
+                            identifierToken = token;
                             identifier = token.Value;
+                        }
+
                         break;
                 }
             }
             if (repetitionIdentifier == null)
-                return new EbnfQualifiedIdentifier(identifier);
+                return new EbnfQualifiedIdentifier(identifier, identifierToken);
 
-            return new EbnfQualifiedIdentifierConcatenation(identifier, repetitionIdentifier);         
+            return new EbnfQualifiedIdentifierConcatenation(identifier, identifierToken, repetitionIdentifier);         
         }
 
         private EbnfExpression VisitExpressionNode(IInternalTreeNode node)
@@ -196,8 +202,10 @@ namespace Pliant.Ebnf
                                 VisitQualifiedIdentifierNode(internalNode));
 
                         if (EbnfGrammar.Literal == symbolValue)
-                            return new EbnfFactorLiteral(
-                                VisitLiteralNode(internalNode));
+                        {
+                            var literal = VisitLiteralNode(internalNode, out var literalToken);
+                            return new EbnfFactorLiteral(literal, literalToken);
+                        }
 
                         if (EbnfGrammar.Repetition == symbolValue)
                             return VisitRepetitionNode(internalNode);
@@ -285,6 +293,13 @@ namespace Pliant.Ebnf
 
         private static string VisitLiteralNode(IInternalTreeNode node)
         {
+            return VisitLiteralNode(node, out var _);
+        }
+
+        private static string VisitLiteralNode(IInternalTreeNode node, out IToken literalToken)
+        {
+            literalToken = null;
+
             for (int c = 0; c < node.Children.Count; c++)
             {
                 var child = node.Children[c];
@@ -298,11 +313,17 @@ namespace Pliant.Ebnf
                         // if token type is string token type remove surrounding quotes
                         if (tokenType.Equals(SingleQuoteStringLexerRule.TokenTypeDescriptor)
                             || tokenType.Equals(DoubleQuoteStringLexerRule.TokenTypeDescriptor))
+                        {
+                            literalToken = token;
                             return token.Value.Substring(1, token.Value.Length - 2);
+                        }
 
                         // TODO: Find a better solution for identifing the lexer rule based on id
                         if (tokenNode.Token.TokenType.Id.Length > 5)
+                        {
+                            literalToken = token;
                             return token.Value;
+                        }
 
                         break;
 
@@ -327,7 +348,7 @@ namespace Pliant.Ebnf
                         var tokenNode = child as ITokenTreeNode;
                         var token = tokenNode.Token;
                         if (token.TokenType.Equals(EbnfGrammar.TokenTypes.SettingIdentifier))
-                            settingIdentifier = new EbnfSettingIdentifier(token.Value);
+                            settingIdentifier = new EbnfSettingIdentifier(token.Value, token);
                         break;
 
                     case TreeNodeType.Internal:
@@ -421,10 +442,12 @@ namespace Pliant.Ebnf
                 var internalNode = child as IInternalTreeNode;
                 var symbolValue = internalNode.Symbol.Value;
 
-                if (EbnfGrammar.Literal == symbolValue)                
-                    return new EbnfLexerRuleFactorLiteral(
-                        VisitLiteralNode(internalNode));
-                
+                if (EbnfGrammar.Literal == symbolValue)
+                {
+                    var literal = VisitLiteralNode(internalNode, out var literalToken);
+                    return new EbnfLexerRuleFactorLiteral(literal, literalToken);
+                }
+
                 if (RegexGrammar.Regex == symbolValue)
                 {
                     var regexVisitor = new RegexVisitor();
