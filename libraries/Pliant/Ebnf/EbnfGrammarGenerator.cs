@@ -55,8 +55,8 @@ namespace Pliant.Ebnf
 
                 case EbnfNodeType.EbnfBlockSetting:
                     var blockSetting = block as EbnfBlockSetting;
-
-                    switch (blockSetting.Setting.SettingIdentifier.Value)
+                    var settingKey = blockSetting.Setting.SettingIdentifier.Value?.TrimStart(':');
+                    switch (settingKey)
                     {
                         case StartProductionSettingModel.SettingKey:
                             grammarModel.StartSetting = StartSetting(blockSetting);
