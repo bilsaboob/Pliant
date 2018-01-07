@@ -28,7 +28,6 @@ namespace Pliant.Ebnf
         public static readonly FullyQualifiedName Optional = new FullyQualifiedName(Namespace, nameof(Optional));
         public static readonly FullyQualifiedName LexerRuleExpression = new FullyQualifiedName(Namespace, nameof(LexerRuleExpression));
         public static readonly FullyQualifiedName LexerRuleTerm = new FullyQualifiedName(Namespace, nameof(LexerRuleTerm));
-        public static readonly FullyQualifiedName LexerRegex = new FullyQualifiedName(Namespace, nameof(LexerRegex));
         public static readonly FullyQualifiedName LexerRuleFactor = new FullyQualifiedName(Namespace, nameof(LexerRuleFactor));
 
         static EbnfGrammar()
@@ -61,12 +60,11 @@ namespace Pliant.Ebnf
                 optional = Optional,
                 lexerRuleExpression = LexerRuleExpression,
                 lexerRuleTerm = LexerRuleTerm,
-                lexerRegex = LexerRegex,
                 lexerRuleFactor = LexerRuleFactor;
 
             var regexGrammar = new RegexGrammar();
             var regexProductionReference = new ProductionReferenceExpression(regexGrammar);
-                        
+
             definition.Rule =
                 block
                 | block + definition;
@@ -96,7 +94,7 @@ namespace Pliant.Ebnf
             factor.Rule
                 = qualifiedIdentifier
                 | literal
-                | lexerRegex
+                | '/' + regexProductionReference + '/'
                 | repetition
                 | optional
                 | grouping;
@@ -118,8 +116,8 @@ namespace Pliant.Ebnf
                 identifier
                 | (Expr)identifier + '.' + qualifiedIdentifier;
 
-            lexerRuleExpression.Rule = 
-                lexerRuleTerm 
+            lexerRuleExpression.Rule =
+                lexerRuleTerm
                 | lexerRuleTerm + '|' + lexerRuleExpression;
 
             lexerRuleTerm.Rule =
@@ -128,14 +126,11 @@ namespace Pliant.Ebnf
 
             lexerRuleFactor.Rule =
                 literal
-                | lexerRegex;
-
-            lexerRegex.Rule = (Expr)
-                '/' + regexProductionReference + '/';
+                | '/' + regexProductionReference + '/';
 
             var grammarExpression = new GrammarExpression(
-                definition, 
-                new[] 
+                definition,
+                new[]
                 {
                     definition,
                     block,
@@ -149,17 +144,16 @@ namespace Pliant.Ebnf
                     repetition,
                     optional,
                     grouping,
-                    qualifiedIdentifier, 
+                    qualifiedIdentifier,
                     lexerRuleExpression,
                     lexerRuleTerm,
-                    lexerRegex,
                     lexerRuleFactor
-                }, 
+                },
                 new[] { new LexerRuleModel(whitespace), new LexerRuleModel(multiLineComment) });
             _ebnfGrammar = grammarExpression.ToGrammar();
         }
 
-        public EbnfGrammar() 
+        public EbnfGrammar()
             : base(_ebnfGrammar)
         {
         }
@@ -247,7 +241,7 @@ namespace Pliant.Ebnf
                     zeroOrMoreLetterOrDigit));
             return new DfaLexerRule(start, TokenTypes.SettingIdentifier);
         }
-        
+
         private static BaseLexerRule CreateIdentifierLexerRule()
         {
             // /[a-zA-Z][a-zA-Z0-9-_]*/
@@ -281,7 +275,7 @@ namespace Pliant.Ebnf
             var whitespace = new DfaLexerRule(startWhitespace, TokenTypes.Whitespace);
             return whitespace;
         }
-        
+
         private static BaseLexerRule CreateMultiLineCommentLexerRule()
         {
             var states = new DfaState[5];
@@ -306,7 +300,7 @@ namespace Pliant.Ebnf
             states[2].AddTransition(lastStar);
             states[3].AddTransition(goBackNotSlash);
             states[3].AddTransition(lastSlash);
-            
+
             return new DfaLexerRule(states[0], TokenTypes.MultiLineComment);
         }
     }

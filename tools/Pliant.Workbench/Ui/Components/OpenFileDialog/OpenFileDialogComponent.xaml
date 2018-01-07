@@ -13,7 +13,7 @@
              wpf:Css.Class="openFileDialog"
              Background="{StaticResource DialogBackColor}"
              >
-    <Grid x:Name="openFileDialogContainer" Margin="5">
+    <Grid x:Name="openFileDialogContainer">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -47,8 +47,26 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1" Margin="5, 10" Click="Open_OnClick">Open</Button>
-            <Button Grid.Column="2" Margin="5, 10" Click="Cancel_OnClick">Cancel</Button>
+            <Button 
+                Grid.Column="1" 
+                Style="{StaticResource RaisedLightButtonStyle}"
+                Foreground="White"
+                Width="100"
+                Margin="0, 0" 
+                Click="Open_OnClick"
+                >
+                OPEN
+            </Button>
+            <Button 
+                Grid.Column="2" 
+                Style="{StaticResource RaisedLightButtonStyle}"
+                Foreground="White"
+                Width="100"
+                Margin="0, 0" 
+                Click="Cancel_OnClick"
+            >
+                CANCEL
+            </Button>
         </Grid>
         
     </Grid>

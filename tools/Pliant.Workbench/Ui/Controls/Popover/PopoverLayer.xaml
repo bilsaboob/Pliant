@@ -6,44 +6,38 @@
              xmlns:popover="clr-namespace:Pliant.Workbench.Ui.Controls.Popover"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="popoverLayer" Panel.ZIndex="10000" Visibility="Collapsed">
+
+    <Grid x:Name="popoverLayer" Panel.ZIndex="10000" Visibility="Collapsed" Opacity="0">
         <Grid.Background>
-            <SolidColorBrush Color="Black" Opacity=".5"/>
+            <SolidColorBrush Color="Black" Opacity="0.5"></SolidColorBrush>
         </Grid.Background>
         
         <ContentControl x:Name="overlayContent"></ContentControl>
         
-        <Grid.Resources>
-
-            <Style TargetType="Grid">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=Visibility}" Value="Visible">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        Storyboard.TargetProperty="Background.Opacity"
-                                        From="0.0" To="1.0" Duration="0:0:5"
-                                    />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                        Storyboard.TargetProperty="Background.Opacity"
-                                        From="1.0" To="0.0" Duration="0:0:5"
-                                    />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-
-
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-            
-        </Grid.Resources>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="popover:PopoverLayer.RequestOpen">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+                            Storyboard.Target="{Binding ElementName=popoverLayer}"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0.0" To="1.0" Duration="0:0:3"
+                        />
+     
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="popover:PopoverLayer.RequestClose">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+                            Storyboard.Target="{Binding ElementName=popoverLayer}"
+                            Storyboard.TargetProperty="Opacity"
+                            From="1.0" To="0.0" Duration="0:0:0.3"
+                        />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
     </Grid>
 </UserControl>

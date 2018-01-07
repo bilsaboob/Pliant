@@ -1,6 +1,7 @@
 ﻿using Pliant.Diagnostics;
 using Pliant.Utilities;
 using System;
+using Pliant.Tokens;
 
 namespace Pliant.Ebnf
 {
@@ -10,10 +11,18 @@ namespace Pliant.Ebnf
 
         public string Identifier { get; private set; }
 
+        public IToken IdentifierToken { get; private set; }
+
         public EbnfQualifiedIdentifier(string identifier)
+            : this(identifier, null)
+        {
+        }
+
+        public EbnfQualifiedIdentifier(string identifier, IToken token)
         {
             Assert.IsNotNull(identifier, nameof(identifier));
             Identifier = identifier;
+            IdentifierToken = token;
             _hashCode = ComputeHashCode();
         }
 
@@ -57,11 +66,20 @@ namespace Pliant.Ebnf
         private readonly int _hashCode;
 
         public EbnfQualifiedIdentifier QualifiedIdentifier { get; private set; }
+        public IToken IdentifierToken { get; private set; }
 
         public EbnfQualifiedIdentifierConcatenation(
             string identifier,
             EbnfQualifiedIdentifier qualifiedIdentifier)
-            : base(identifier)
+            : this(identifier, null, qualifiedIdentifier)
+        {
+        }
+
+        public EbnfQualifiedIdentifierConcatenation(
+            string identifier,
+            IToken identifierToken,
+            EbnfQualifiedIdentifier qualifiedIdentifier)
+            : base(identifier, identifierToken)
         {
             QualifiedIdentifier = qualifiedIdentifier;
             _hashCode = ComputeHashCode();

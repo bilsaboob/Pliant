@@ -27,6 +27,20 @@ namespace Pliant.Workbench.Ui.Controls.Popover
         {
             InitializeComponent();
         }
+        
+        public static readonly RoutedEvent RequestOpenEvent = EventManager.RegisterRoutedEvent("RequestOpen", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PopoverLayer));
+        public event RoutedEventHandler RequestOpen
+        {
+            add { AddHandler(RequestOpenEvent, value); }
+            remove { RemoveHandler(RequestOpenEvent, value); }
+        }
+
+        public static readonly RoutedEvent RequestCloseEvent = EventManager.RegisterRoutedEvent("RequestClose", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(PopoverLayer));
+        public event RoutedEventHandler RequestClose
+        {
+            add { AddHandler(RequestCloseEvent, value); }
+            remove { RemoveHandler(RequestCloseEvent, value); }
+        }
 
         public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register(
             "OverlayColor", typeof(Brush), typeof(PopoverLayer), new PropertyMetadata(new SolidColorBrush(Colors.Black) {Opacity = 0.5}));
@@ -53,19 +67,27 @@ namespace Pliant.Workbench.Ui.Controls.Popover
             get { return (double) GetValue(OverlayOpacityProperty); }
             set { SetValue(OverlayOpacityProperty, value); }
         }
+
+        public static readonly DependencyProperty DisplayProperty = DependencyProperty.Register(
+            "Display", typeof(bool), typeof(PopoverLayer), new PropertyMetadata(default(bool)));
+
+        public bool Display
+        {
+            get { return (bool) GetValue(DisplayProperty); }
+            set { SetValue(DisplayProperty, value); }
+        }
         
         public void Show()
         {
             // make visible
             this.popoverLayer.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Visible;
+            
+            RaiseEvent(new RoutedEventArgs(RequestOpenEvent));
         }
 
         public void Hide()
         {
-            this.Visibility = Visibility.Hidden;
-            this.popoverLayer.Visibility = Visibility.Hidden;
-            this.overlayContent.Content = null;
+            RaiseEvent(new RoutedEventArgs(RequestCloseEvent));
         }
 
         public void ShowContent(object content)
@@ -104,6 +126,12 @@ namespace Pliant.Workbench.Ui.Controls.Popover
                 if (overlayContent.HorizontalAlignment != HorizontalAlignment.Stretch)
                     overlayContent.HorizontalAlignment = HorizontalAlignment.Center;
             }
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            this.popoverLayer.Visibility = Visibility.Hidden;
+            this.overlayContent.Content = null;
         }
     }
 }

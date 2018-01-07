@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,7 +23,7 @@ namespace Pliant.Workbench
             if (!HasOpened)
             {
                 HasOpened = true;
-                mainMenu.MainMenu.ShowOpenFolder();
+                //mainMenu.MainMenu.ShowOpenFolder();
             }
         }
     }

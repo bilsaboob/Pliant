@@ -8,6 +8,9 @@
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Pliant.Workbench;component/Ui/Styles/Colors/VsCode.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Pliant.Workbench;component/Ui/Styles/Button.xaml" />
+                
                 <ResourceDictionary>
                     <SolidColorBrush x:Key="MainBackColor" Color="#1E1E1E"></SolidColorBrush>
 

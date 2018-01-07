@@ -103,6 +103,7 @@
       <DependentUpon>PopoverLayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ui\Controls\Popover\PopoverWindow.cs" />
+    <Compile Include="Ui\Hue.cs" />
     <Compile Include="Utils\DependencyProperty.cs" />
     <Compile Include="Utils\Path.cs" />
     <Page Include="Ui\Components\FolderModule\FolderComponent.xaml">
@@ -195,6 +196,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Ui\Styles\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\Styles\Colors\VsCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsing\GrammarParsing.cs" />
@@ -216,9 +225,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Content Include="Ui\Styles\app.scss">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
     <None Include="Pliant.Workbench_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
