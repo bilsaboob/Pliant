@@ -1,6 +1,7 @@
 ﻿using Pliant.Utilities;
 using System;
 using Pliant.Tokens;
+using Pliant.Tree;
 
 namespace Pliant.Ebnf
 {
@@ -58,10 +59,18 @@ namespace Pliant.Ebnf
         private readonly int _hashCode;
 
         public RegularExpressions.Regex Regex { get; private set; }
+        public IInternalTreeNode RegexNode { get; private set; }
 
         public EbnfLexerRuleFactorRegex(RegularExpressions.Regex regex)
+            : this(regex, null)
+        {
+        }
+
+        public EbnfLexerRuleFactorRegex(RegularExpressions.Regex regex, IInternalTreeNode regexNode)
         {
             Regex = regex;
+            RegexNode = regexNode;
+
             _hashCode = ComputeHashCode();
         }
 

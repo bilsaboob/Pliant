@@ -452,7 +452,7 @@ namespace Pliant.Ebnf
                 {
                     var regexVisitor = new RegexVisitor();
                     internalNode.Accept(regexVisitor);
-                    return new EbnfLexerRuleFactorRegex(regexVisitor.Regex);
+                    return new EbnfLexerRuleFactorRegex(regexVisitor.Regex, internalNode);
                 }
             }
             throw UnreachableCodeException();
