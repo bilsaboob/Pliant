@@ -137,8 +137,8 @@ namespace Pliant.Ebnf
             var nfa = LexerRuleTerm(expression.Term);
             if (expression.NodeType == EbnfNodeType.EbnfLexerRuleExpressionAlteration)
             {
-                var alteration = expression as EbnfLexerRuleExpressionAlteration;
-                var alterationNfa = LexerRuleExpression(alteration);
+                var alteration = (EbnfLexerRuleExpressionAlteration)expression;
+                var alterationNfa = LexerRuleExpression(alteration.Expression);
                 nfa = nfa.Union(alterationNfa);
             }
             return nfa;
