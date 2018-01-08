@@ -195,6 +195,10 @@ namespace Pliant.RegularExpressions
                         terminal = new WordTerminal();
                         negate = !negate;
                         break;
+                    case 'n':
+                        terminal = new LinebreakTerminal();
+                        negate = !negate;
+                        break;
                     default:
                         terminal = new CharacterTerminal(value);
                         break;
