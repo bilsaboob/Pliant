@@ -6,27 +6,126 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using Pliant.Tokens;
+using Pliant.Tree;
 
 namespace Pliant.Ebnf
 {
     public class EbnfGrammarGenerator
     {
+        private class DefinitionInfo
+        {
+            public DefinitionInfo(EbnfBlock block)
+            {
+                Block = block;
+            }
+
+            public EbnfBlock Block { get; set; }
+
+            public EbnfQualifiedIdentifier NameIdentifier { get; set; }
+            public string Name => NameIdentifier?.Identifier;
+
+            public FullyQualifiedName FullyQualifiedName { get; set; }
+            public string FullName => FullyQualifiedName?.FullName;
+
+            public bool IsLex { get; set; }
+            public bool IsRule { get; set; }
+            public bool IsSetting { get; set; }
+            public SymbolModel Model { get; set; }
+        }
+
         readonly INfaToDfa _nfaToDfaAlgorithm;
         readonly IRegexToNfa _regexToNfaAlgorithm;
+        private Dictionary<string, DefinitionInfo> _definitions;
 
         public EbnfGrammarGenerator()
         {
             _regexToNfaAlgorithm = new ThompsonConstructionAlgorithm();
             _nfaToDfaAlgorithm = new SubsetConstructionAlgorithm();
+            _definitions = new Dictionary<string, DefinitionInfo>();
         }
 
         public IGrammar Generate(EbnfDefinition ebnf)
         {
+            BuildDefinitions(ebnf);
+
             var grammarModel = new GrammarModel();
             Definition(ebnf, grammarModel);
             return grammarModel.ToGrammar();
         }
 
+        #region Definitions
+        private EbnfDefinition BuildEbnfDefinition(InternalTreeNode parseTree)
+        {
+            var ebnfVisitor = new EbnfVisitor();
+            parseTree.Accept(ebnfVisitor);
+            return ebnfVisitor.Definition;
+        }
+
+        private void BuildDefinitions(EbnfDefinition definition)
+        {
+            CollectRule(definition.Block);
+
+            // process any remaining definitions
+            if (definition.NodeType != EbnfNodeType.EbnfDefinitionConcatenation)
+                return;
+
+            var definitionConcatenation = definition as EbnfDefinitionConcatenation;
+            BuildDefinitions(definitionConcatenation.Definition);
+        }
+
+        private void CollectRule(EbnfBlock block)
+        {
+            switch (block.NodeType)
+            {
+                case EbnfNodeType.EbnfBlockLexerRule:
+                    var blockLexerRule = block as EbnfBlockLexerRule;
+                    AddDefInfo(blockLexerRule.LexerRule.QualifiedIdentifier, new DefinitionInfo(block) { IsLex = true });
+                    break;
+
+                case EbnfNodeType.EbnfBlockRule:
+                    var blockRule = block as EbnfBlockRule;
+                    AddDefInfo(blockRule.Rule.QualifiedIdentifier, new DefinitionInfo(block) { IsRule = true });
+                    break;
+            }
+        }
+
+        private void AddDefInfo(EbnfQualifiedIdentifier ident, DefinitionInfo defInfo)
+        {
+            defInfo.NameIdentifier = ident;
+            defInfo.FullyQualifiedName = GetFullyQualifiedNameFromQualifiedIdentifier(ident);
+            _definitions[defInfo.FullName] = defInfo;
+        }
+
+        private bool TryGetDefinition(string name, out DefinitionInfo def)
+        {
+            return _definitions.TryGetValue(name, out def);
+        }
+
+        private bool IsLexDefinition(string name)
+        {
+            if (!_definitions.TryGetValue(name, out var def))
+                return false;
+
+            return def.IsLex;
+        }
+
+        private bool IsRuleDefinition(string name)
+        {
+            if (!_definitions.TryGetValue(name, out var def))
+                return false;
+
+            return def.IsRule;
+        }
+
+        private bool DefinitionExists(string name)
+        {
+            return _definitions.TryGetValue(name, out var def);
+        }
+        
+        #endregion
+
+        #region Generate
+        
         private void Definition(EbnfDefinition definition, GrammarModel grammarModel)
         {
             Block(definition.Block, grammarModel);
@@ -276,20 +375,43 @@ namespace Pliant.Ebnf
 
         IEnumerable<ProductionModel> Repetition(EbnfFactorRepetition repetition, ProductionModel currentProduction)
         {
-            var name = repetition.ToString();
-            var nonTerminal = new NonTerminal(name);
-            var repetitionProduction = new ProductionModel(nonTerminal);
+            // build the repetition production
+            var repeatProductionName = repetition.ToString() + "_many";
+            var repeatNonTerminal = new NonTerminal(repeatProductionName);
+            var repeatProduction = new ProductionModel(repeatNonTerminal);
+            currentProduction.AddWithAnd(repeatProduction);
 
-            currentProduction.AddWithAnd(new NonTerminalModel(nonTerminal));
+            // build the leaf productions
+            var leafProductionName = repetition.ToString();
+            var leafNonTerminal = new NonTerminal(leafProductionName);
+            var leafProduction = new ProductionModel(leafNonTerminal);
+            
+            // my_many -> leaf
+            repeatProduction.AddWithAnd(leafProduction);
+            
+            // my_many -> leaf my_many (the leaf and then repeat with self)
+            repeatProduction.AddWithOr(leafProduction);
+            repeatProduction.AddWithAnd(repeatProduction);
 
+            // my_many -> (empty for optional)
+            repeatProduction.Lambda();
+
+            // process the repetition expressions
             var expression = repetition.Expression;
-            foreach (var production in Expression(expression, repetitionProduction))
+            foreach (var production in Expression(expression, leafProduction))
                 yield return production;
 
-            repetitionProduction.AddWithAnd(new NonTerminalModel(nonTerminal));
-            repetitionProduction.Lambda();
+            /*currentProduction.AddWithAnd(new NonTerminalModel(leafNonTerminal));
 
-            yield return repetitionProduction;
+            var expression = repetition.Expression;
+            foreach (var production in Expression(expression, leafProduction))
+                yield return production;
+
+            leafProduction.AddWithOr(new NonTerminalModel(leafNonTerminal));
+            leafProduction.Lambda();*/
+
+            yield return leafProduction;
+            yield return repeatProduction;
         }
 
         IEnumerable<ProductionModel> Term(EbnfTerm term, ProductionModel currentProduction)
@@ -329,8 +451,33 @@ namespace Pliant.Ebnf
 
                 case EbnfNodeType.EbnfFactorIdentifier:
                     var identifier = factor as EbnfFactorIdentifier;
-                    var nonTerminal = GetFullyQualifiedNameFromQualifiedIdentifier(identifier.QualifiedIdentifier);                   
-                    currentProduction.AddWithAnd(new NonTerminalModel(nonTerminal));
+                    var nonTerminal = GetFullyQualifiedNameFromQualifiedIdentifier(identifier.QualifiedIdentifier);
+
+                    if (TryGetDefinition(nonTerminal.FullName, out var def))
+                    {
+                        if (def.IsLex)
+                        {
+                            // Either use the cached lexer model or build it and cache it
+                            var lexerRuleModel = def.Model as LexerRuleModel;
+                            if (lexerRuleModel == null)
+                            {
+                                var lexRuleBlock = def.Block as EbnfBlockLexerRule;
+                                lexerRuleModel = LexerRule(lexRuleBlock);
+                                def.Model = lexerRuleModel;
+                            }
+                            currentProduction.AddWithAnd(lexerRuleModel);
+                        }
+                        else
+                        {
+                            // add a non terminal, we don't need to evaluat it or anything
+                            currentProduction.AddWithAnd(new NonTerminalModel(nonTerminal));
+                        }
+                    }
+                    else
+                    {
+                        //throw new Exception($"Unresolved reference to '{nonTerminal.FullName}'");
+                    }
+                    
                     break;
 
                 case EbnfNodeType.EbnfFactorLiteral:
@@ -363,6 +510,12 @@ namespace Pliant.Ebnf
                 index++;
             }
             return new FullyQualifiedName(@namespace.ToString(), currentQualifiedIdentifier.Identifier);
-        }   
+        }
+        #endregion
+
+        private static Exception UnreachableCodeException()
+        {
+            return new InvalidOperationException("Unreachable Code Detected");
+        }
     }
 }
